@@ -125,7 +125,7 @@ public class Guest implements Serializable, GenericEntity {
 
     @Override
     public String getInsertValues() {
-        return String.format("'%s', '%s', '%s', '%s', '%s', '%s'", id, firstname, lastname, contact, email);
+        return String.format("'%s', '%s', '%s', '%s', '%s'", id, firstname, lastname, contact, email);
     }
 
     @Override

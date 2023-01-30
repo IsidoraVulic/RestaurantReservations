@@ -15,7 +15,7 @@ import javax.swing.table.AbstractTableModel;
 public class GuestTableModel extends AbstractTableModel {
 
     private ArrayList<Guest> list = new ArrayList<>();
-    String[] columns = {"Šifra člana", "Ime i prezime", "Telefon"};
+    String[] columns = {"Šifra gosta", "Ime i prezime", "Telefon"};
 
     public GuestTableModel() {
 
@@ -53,7 +53,11 @@ public class GuestTableModel extends AbstractTableModel {
     public void setList(ArrayList<Guest> list) {
         this.list = list;
         this.fireTableDataChanged();
-
+    }
+    
+     @Override
+    public String getColumnName(int i) {
+        return columns[i];
     }
 
 }

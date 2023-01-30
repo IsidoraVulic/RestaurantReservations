@@ -3,8 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/RYZEN/Desktop/Seminarski/Clientiiii/src/controller/Controller.java</file>
-            <file>file:/C:/Users/RYZEN/Desktop/Seminarski/Clientiiii/src/view/form/MainForm.java</file>
+            <file>file:/C:/Users/RYZEN/Desktop/RestaurantReservations/Clientiiii/src/view/form/AllRestaurantsForm.java</file>
+            <file>file:/C:/Users/RYZEN/Desktop/RestaurantReservations/Clientiiii/src/view/form/MainForm.java</file>
+            <file>file:/C:/Users/RYZEN/Desktop/RestaurantReservations/Clientiiii/src/view/form/AllGuestsForm.java</file>
+            <file>file:/C:/Users/RYZEN/Desktop/RestaurantReservations/Clientiiii/src/view/form/tablemodel/GuestTableModel.java</file>
+            <file>file:/C:/Users/RYZEN/Desktop/RestaurantReservations/Clientiiii/src/view/form/GuestForm.java</file>
+            <file>file:/C:/Users/RYZEN/Desktop/RestaurantReservations/Clientiiii/src/controller/Controller.java</file>
+            <file>file:/C:/Users/RYZEN/Desktop/RestaurantReservations/Clientiiii/src/view/form/RestaurantForm.java</file>
+            <file>file:/C:/Users/RYZEN/Desktop/RestaurantReservations/Clientiiii/src/view/form/LoginForm.java</file>
+            <file>file:/C:/Users/RYZEN/Desktop/RestaurantReservations/Clientiiii/src/view/form/GenericForm.java</file>
         </group>
     </open-files>
 </project-private>

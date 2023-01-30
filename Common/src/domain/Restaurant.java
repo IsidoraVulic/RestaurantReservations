@@ -105,7 +105,7 @@ public class Restaurant implements Serializable, GenericEntity {
         List<GenericEntity> list = new ArrayList<>();
         while (rs.next()) {
             Restaurant restaurant = new Restaurant();
-            restaurant.setID(rs.getString("RestaurantID"));
+            restaurant.setId(rs.getString("RestaurantID"));
             restaurant.setAddress(rs.getString("Address"));
             restaurant.setName(rs.getString("Name"));
 

@@ -12,8 +12,6 @@ import domain.User;
 import exception.ServerException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,118 +54,115 @@ public class Controller {
         return instanca;
     }
 
-    public User login(User administrator) throws ServerException, IOException, SQLException {
+    public User login(User administrator) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOLogin sopa = new SOLogin();
         sopa.setParams(administrator);
         sopa.execute();
         return sopa.getUser();
     }
 
-    public Restaurant createRestaurant() throws ServerException, IOException, SQLException {
+    public Restaurant createRestaurant() throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOCreateRestaurant soknk = new SOCreateRestaurant();
         soknk.execute();
         return soknk.getRestaurant();
     }
 
-    public Restaurant saveRestaurant(Restaurant restaurant) throws ServerException, IOException, SQLException {
+    public Restaurant saveRestaurant(Restaurant restaurant) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOSaveRestaurant sozk = new SOSaveRestaurant();
         sozk.setRestaurant(restaurant);
         sozk.execute();
         return sozk.getRestaurant();
     }
 
-    public ArrayList<Restaurant> findRestaurants(HashMap<String, String> kriterijum) throws ServerException, IOException, SQLException {
+    public ArrayList<Restaurant> findRestaurants(HashMap<String, String> kriterijum) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOFindRestaurants sonk = new SOFindRestaurants();
         sonk.setCriteria(kriterijum);
         sonk.execute();
         return sonk.getRestaurants();
     }
 
-    public Restaurant findRestaurant(Restaurant restaurant) throws ServerException, IOException, SQLException {
+    public Restaurant findRestaurant(Restaurant restaurant) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOFindRestaurant sonk = new SOFindRestaurant();
         sonk.setParams(restaurant);
         sonk.execute();
         return sonk.getRestaurant();
     }
 
-    public Table saveTable(Table table) throws ServerException, IOException, SQLException {
+    public Table saveTable(Table table) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOSaveTable sozp = new SOSaveTable();
         sozp.setTable(table);
         sozp.execute();
         return sozp.getTable();
     }
 
-    public ArrayList<Table> findTables(String pib) throws ServerException, IOException, SQLException {
+    public ArrayList<Table> findTables(String pib) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOFindTables sonp = new SOFindTables();
         sonp.setPIB(pib);
         sonp.execute();
         return sonp.getTables();
     }
 
-    public boolean deleteTable(Table table) throws ServerException, IOException, SQLException {
+    public boolean deleteTable(Table table) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SODeleteTable soip = new SODeleteTable();
         soip.setTable(table);
         soip.execute();
         return soip.isSuccess();
     }
 
-    public Guest createGuest() throws ServerException, IOException, SQLException {
+    public Guest createGuest() throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOCreateGuest sokc = new SOCreateGuest();
         sokc.execute();
         return sokc.getGuest();
     }
 
 
-    public ArrayList<Guest> findGuests(HashMap<String, String> kriterijum) throws ServerException, IOException, SQLException {
+    public ArrayList<Guest> findGuests(HashMap<String, String> kriterijum) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOFindGuests sonc = new SOFindGuests();
         sonc.setCriteria(kriterijum);
         sonc.execute();
         return sonc.getGuests();
     }
 
-    public Guest findGuest(Guest guest) throws ServerException, IOException, SQLException {
+    public Guest findGuest(Guest guest) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOFindGuest sonc = new SOFindGuest();
         sonc.setGuest(guest);
         sonc.execute();
         return sonc.getCompleteGuest();
     }
 
-    public boolean saveGuest(Guest guest) throws ServerException, IOException, SQLException {
+    public boolean saveGuest(Guest guest) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOSaveGuest sozc = new SOSaveGuest();
         sozc.setGuest(guest);
         sozc.execute();
         return sozc.isSuccess();
     }
 
-    public ArrayList<Restaurant> getAllRestaurants() throws ServerException, IOException, SQLException {
+    public ArrayList<Restaurant> getAllRestaurants() throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOGetAllRestaurants soulk = new SOGetAllRestaurants();
         soulk.execute();
         return soulk.getRestaurants();
     }
 
-    public ArrayList<Table> getAllTables(String pib, LocalDate date, LocalTime time) throws ServerException, IOException, SQLException {
-        SOGetAllTables soulp = new SOGetAllTables();
-        soulp.setPIB(pib);
-        soulp.setDate(date);
-        soulp.setTime(time);
-        soulp.execute();
-        return soulp.getTables();
+    public ArrayList<Table> getAllTables(Reservation reservation) throws ServerException, IOException, SQLException {
+        SOGetAllTables sogat = new SOGetAllTables();
+        sogat.setReservation(reservation);
+        return sogat.getTables();
     }
 
-    public ArrayList<Guest> getAllGuests() throws ServerException, IOException, SQLException {
+    public ArrayList<Guest> getAllGuests() throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOGetAllGuests soulc = new SOGetAllGuests();
         soulc.execute();
         return soulc.getGuests();
     }
 
-    public boolean saveReservation(Reservation r) throws ServerException, IOException, SQLException {
+    public boolean saveReservation(Reservation r) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOSaveReservation sozi = new SOSaveReservation();
         sozi.setReservation(r);
         sozi.execute();
         return sozi.isSuccess();
     }
 
-    public ArrayList<Table> findTablesByGuest(Guest guest) throws ServerException, IOException, SQLException {
+    public ArrayList<Table> findTablesByGuest(Guest guest) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOFindTablesByGuest sonip = new SOFindTablesByGuest();
         sonip.setGuest(guest);
         sonip.execute();
@@ -175,7 +170,7 @@ public class Controller {
     }
 
 
-    public void logout(User user) throws ServerException, IOException, SQLException {
+    public void logout(User user) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOLogout sois = new SOLogout();
         sois.setUser(user);
         sois.execute();
@@ -183,20 +178,20 @@ public class Controller {
 
     // pomoćne
     
-    public List<User> getListaKorisnika() throws ServerException, IOException, SQLException {
+    public List<User> getListaKorisnika() throws ServerException, IOException, SQLException, ClassNotFoundException {
         if (listaKorisnika == null) {
             listaKorisnika = getAllUsers();
         }
         return listaKorisnika;
     }
 
-    private List<User> getAllUsers() throws ServerException, IOException, SQLException {
+    private List<User> getAllUsers() throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOGetAllUsers souk = new SOGetAllUsers();
         souk.execute();
         return souk.getListaKorisnika();
     }
 
-    public void createUser(User a) throws ServerException, IOException, SQLException {
+    public void createUser(User a) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOCreateUser ka = new SOCreateUser();
         ka.setUser(a);
         ka.execute();

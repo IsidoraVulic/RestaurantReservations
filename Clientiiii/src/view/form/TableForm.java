@@ -4,7 +4,12 @@
  */
 package view.form;
 
+import controller.Controller;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import view.form.tablemodel.RestaurantTableModel;
 import view.form.tablemodel.TableTableModel;
@@ -55,6 +60,9 @@ public class TableForm extends GenericForm {
      */
     public TableForm() {
         initComponents();
+        setFormName();
+        setTableModels();
+        setTools();
     }
 
     /**
@@ -66,12 +74,113 @@ public class TableForm extends GenericForm {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panelSearch = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
+        lblAddress = new javax.swing.JLabel();
+        lblPib = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        txtAddress = new javax.swing.JTextField();
+        txtPib = new javax.swing.JTextField();
+        btnFindRestaurants = new javax.swing.JButton();
+        lblInfo = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        panelRestaurant = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRestaurants = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        btnShowDetails = new javax.swing.JButton();
+        btnShowTables = new javax.swing.JButton();
+        panelTables = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblTables = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        btnDelete = new javax.swing.JButton();
+        btnBackToMain = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        panelSearch.setBackground(new java.awt.Color(255, 255, 255));
+        panelSearch.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setText("Popunite kriterijume pretrage za restoran sa čijim stolovima želite da radite:");
+
+        lblName.setText("Naziv:");
+
+        lblAddress.setText("Adresa:");
+
+        lblPib.setText("PIB:");
+
+        btnFindRestaurants.setText("Pronađi restorane");
+        btnFindRestaurants.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFindRestaurantsActionPerformed(evt);
+            }
+        });
+
+        lblInfo.setText("(?)");
+
+        javax.swing.GroupLayout panelSearchLayout = new javax.swing.GroupLayout(panelSearch);
+        panelSearch.setLayout(panelSearchLayout);
+        panelSearchLayout.setHorizontalGroup(
+            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSearchLayout.createSequentialGroup()
+                .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelSearchLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnFindRestaurants))
+                    .addGroup(panelSearchLayout.createSequentialGroup()
+                        .addGap(108, 108, 108)
+                        .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)
+                        .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtName)
+                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblPib, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(txtPib, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblInfo)
+                .addGap(58, 58, 58))
+            .addGroup(panelSearchLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelSearchLayout.setVerticalGroup(
+            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSearchLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel1)
+                .addGap(31, 31, 31)
+                .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelSearchLayout.createSequentialGroup()
+                        .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblName)
+                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblAddress)
+                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelSearchLayout.createSequentialGroup()
+                        .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblPib)
+                            .addComponent(txtPib, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(54, 54, 54)
+                        .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnFindRestaurants)
+                            .addComponent(lblInfo))))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setText("Sto");
+
+        panelRestaurant.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tblRestaurants.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -86,6 +195,54 @@ public class TableForm extends GenericForm {
         ));
         jScrollPane1.setViewportView(tblRestaurants);
 
+        jLabel3.setText("Izaberite restoran:");
+
+        btnShowDetails.setText("Prikaži detalje");
+        btnShowDetails.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowDetailsActionPerformed(evt);
+            }
+        });
+
+        btnShowTables.setText("Prikaži stolove");
+        btnShowTables.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowTablesActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelRestaurantLayout = new javax.swing.GroupLayout(panelRestaurant);
+        panelRestaurant.setLayout(panelRestaurantLayout);
+        panelRestaurantLayout.setHorizontalGroup(
+            panelRestaurantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRestaurantLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(panelRestaurantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelRestaurantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelRestaurantLayout.createSequentialGroup()
+                            .addComponent(btnShowDetails)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnShowTables, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(92, Short.MAX_VALUE))
+        );
+        panelRestaurantLayout.setVerticalGroup(
+            panelRestaurantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRestaurantLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panelRestaurantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnShowDetails)
+                    .addComponent(btnShowTables))
+                .addGap(60, 60, 60))
+        );
+
+        panelTables.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         tblTables.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -99,32 +256,119 @@ public class TableForm extends GenericForm {
         ));
         jScrollPane2.setViewportView(tblTables);
 
+        jLabel4.setText("Izaberite sto:");
+
+        btnDelete.setText("Obriši");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelTablesLayout = new javax.swing.GroupLayout(panelTables);
+        panelTables.setLayout(panelTablesLayout);
+        panelTablesLayout.setHorizontalGroup(
+            panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTablesLayout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addGroup(panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDelete)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39))
+        );
+        panelTablesLayout.setVerticalGroup(
+            panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTablesLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnDelete)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnBackToMain.setText("Nazad");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(78, Short.MAX_VALUE))
+                    .addComponent(btnBackToMain)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(panelRestaurant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(panelTables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(24, 24, 24)
+                .addComponent(panelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelTables, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelRestaurant, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(46, 46, 46)
+                .addComponent(btnBackToMain)
+                .addGap(41, 41, 41))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnFindRestaurantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindRestaurantsActionPerformed
+        if (validSearch()) {
+            try {
+                findRestaurants();
+            } catch (Exception ex) {
+                Logger.getLogger(TableForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnFindRestaurantsActionPerformed
+
+    private void btnShowDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowDetailsActionPerformed
+        if (tblRestaurants.getSelectedRow() != -1) {
+            String pib = restaurantTableModel.getList().get(tblRestaurants.getSelectedRow()).getIDvalue();
+            try {
+                findRestaurantDetails(pib);
+            } catch (Exception ex) {
+                Logger.getLogger(TableForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnShowDetailsActionPerformed
+
+    private void btnShowTablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowTablesActionPerformed
+        if (tblRestaurants.getSelectedRow() != -1) {
+            try {
+                findTables(restaurantTableModel.getList().get(tblRestaurants.getSelectedRow()).getIDvalue());
+            } catch (Exception ex) {
+                Logger.getLogger(TableForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Odaberite knjigu za koju želite da nađete primerke.");
+        }    }//GEN-LAST:event_btnShowTablesActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (tblTables.getSelectedRow() != -1) {
+            try {
+                deleteTable(tableTableModel.getList().get(tblTables.getSelectedRow()).getIDvalue());
+            } catch (Exception ex) {
+                Logger.getLogger(TableForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Odaberite primerak koji želite da obrišete.");
+        }    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,12 +413,13 @@ public class TableForm extends GenericForm {
 
     @Override
     void setFormName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.setTitle("Froma za rad sa stolovima");
     }
 
     @Override
     void setTableModels() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        tblRestaurants.setModel(restaurantTableModel);
+        tblTables.setModel(tableTableModel);
     }
 
     @Override
@@ -184,13 +429,88 @@ public class TableForm extends GenericForm {
 
     @Override
     void setTools() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        lblInfo.setToolTipText("Ukoliko ostavite sva  polja prazna sistem će pokušati da pronađe sve restorane. \n Da bi se restoran pojavio u rezultatu pretrage mora da ispuni sve uslove pretrage.");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBackToMain;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnFindRestaurants;
+    private javax.swing.JButton btnShowDetails;
+    private javax.swing.JButton btnShowTables;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblAddress;
+    private javax.swing.JLabel lblInfo;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblPib;
+    private javax.swing.JPanel panelRestaurant;
+    private javax.swing.JPanel panelSearch;
+    private javax.swing.JPanel panelTables;
     private javax.swing.JTable tblRestaurants;
     private javax.swing.JTable tblTables;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtPib;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validSearch() {
+        if (correctPIB()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void findRestaurants() throws Exception {
+        HashMap<String, String> criteria = new HashMap<>();
+        if (!txtAddress.getText().isEmpty()) {
+            criteria.put("address", txtAddress.getText());
+        }
+        if (!txtName.getText().isEmpty()) {
+            criteria.put("name", txtName.getText());
+        }
+        if (!txtPib.getText().isEmpty()) {
+            criteria.put("PIB", txtPib.getText());
+        }
+        Controller.getInstace().findRestaurants(criteria, this);
+        JOptionPane.showMessageDialog(this, "Sistem je našao sve restorane po zadatoj vrednosti.");
+    }
+
+    private boolean correctPIB() {
+        String pib = txtPib.getText();
+        if (pib.length() == 8 && pib.charAt(0) != '0' && (pib.charAt(0) == '1' && pib.charAt(7) == '0')) {
+            return true;
+        }
+        return false;
+    }
+
+    private void findRestaurantDetails(String pib) throws Exception {
+        HashMap<String, String> hashMapRestaurant = Controller.getInstace().findRestaurant(pib);
+        JOptionPane.showMessageDialog(this, "Sistem je pronašao sve podatke o izabranom restoranu.\n Naziv restorana: " + hashMapRestaurant.get("name") + "\n"
+                + "Adresa: " + hashMapRestaurant.get("address") + "\n"
+                + "PIB: " + hashMapRestaurant.get("pib"));
+    }
+
+    private void findTables(String iDvalue) throws Exception {
+        boolean success = Controller.getInstace().findTables(iDvalue, this);
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Sistem je našao stolove za dati restoran.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Sistem ne može da nađe stolove za dati restoran.");
+        }
+    }
+
+    private void deleteTable(String iDvalue) throws Exception {
+        boolean success = Controller.getInstace().deleteTable(iDvalue);
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Sistem je obrisao izabrani sto.");
+            tableTableModel.setList(new ArrayList<>());
+        } else {
+            JOptionPane.showMessageDialog(this, "Sistem ne može da obriše izabrani sto.");
+        }
+    }
 }

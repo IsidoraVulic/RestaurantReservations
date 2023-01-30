@@ -37,6 +37,7 @@ public class Reservation implements Serializable, GenericEntity {
 
     public Reservation(String id, Guest guest, Table table, User user, LocalDate date, LocalTime time, String note) {
         this.id = id;
+       
         this.guest = guest;
         this.table = table;
         this.user = user;
@@ -44,6 +45,8 @@ public class Reservation implements Serializable, GenericEntity {
         this.time = time;
         this.note = note;
     }
+
+    
 
     public String getId() {
         return id;
@@ -132,6 +135,7 @@ public class Reservation implements Serializable, GenericEntity {
         if (!Objects.equals(this.note, other.note)) {
             return false;
         }
+      
         if (!Objects.equals(this.guest, other.guest)) {
             return false;
         }
@@ -149,7 +153,7 @@ public class Reservation implements Serializable, GenericEntity {
 
     @Override
     public String toString() {
-        return "Reservation{" + "id=" + id + ", date=" + date + ", time=" + time + ", note=" + note + ", guest=" + guest + ", table=" + table + ", user=" + user + '}';
+        return "Reservation{" + "id=" + id + ", guest=" + guest + ", table=" + table + ", user=" + user + ", date=" + date + ", time=" + time + ", note=" + note + '}';
     }
 
     @Override
@@ -183,6 +187,7 @@ public class Reservation implements Serializable, GenericEntity {
             User user = new User();
             user.setID(rs.getString("UserID"));
             reservation.setUser(user);
+            
 
             list.add(reservation);
 

@@ -39,10 +39,11 @@ public class AllGuestsForm extends GenericForm {
     /**
      * Creates new form AllGuestsForm
      */
-    public AllGuestsForm() {
+    public AllGuestsForm() throws Exception {
         initComponents();
         setTableModels();
         setTools();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -248,14 +249,15 @@ public class AllGuestsForm extends GenericForm {
     }//GEN-LAST:event_btnCreateNewActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        if (tblGuests.getSelectedRow() != -1) {
+        int selected = tblGuests.getSelectedRow();
+        if (selected != -1) {
             try {
-                editGuest(guestTableModel.getList().get(tblGuests.getSelectedRow()).getId());
+                editGuest(guestTableModel.getList().get(selected).getId());
             } catch (Exception ex) {
                 Logger.getLogger(AllGuestsForm.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Odaberite člana kog želite da izmenite.");
+            JOptionPane.showMessageDialog(this, "Odaberite gosta kog želite da izmenite.");
         }    }//GEN-LAST:event_btnEditActionPerformed
 
     /**
@@ -288,7 +290,11 @@ public class AllGuestsForm extends GenericForm {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AllGuestsForm().setVisible(true);
+                try {
+                    new AllGuestsForm().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(AllGuestsForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -357,7 +363,7 @@ public class AllGuestsForm extends GenericForm {
         }
 
         Controller.getInstace().findGuests(criteria, this);
-        JOptionPane.showMessageDialog(this, "Sistem je našao članove po zadatoj vrednosti.");
+        JOptionPane.showMessageDialog(this, "Sistem je našao goste po zadatoj vrednosti.");
     }
 
     private boolean validID() {
@@ -380,12 +386,13 @@ public class AllGuestsForm extends GenericForm {
         return false;
     }
 
-    private void createGuest() {
+    private void createGuest() throws Exception {
         GuestForm form = new GuestForm();
         form.setParentForm(this);
         form.setStatus("add");
         form.setVisible(true);
         dispose();
+        guestTableModel.setList(Controller.getInstace().getAllGuests());
     }
 
     private void editGuest(String id) throws Exception {

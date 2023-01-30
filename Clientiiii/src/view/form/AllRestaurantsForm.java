@@ -4,7 +4,13 @@
  */
 package view.form;
 
+import controller.Controller;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import view.form.tablemodel.RestaurantTableModel;
 
 /**
  *
@@ -12,11 +18,33 @@ import java.util.HashMap;
  */
 public class AllRestaurantsForm extends GenericForm {
 
+    private RestaurantTableModel rtm = new RestaurantTableModel();
+
+    public RestaurantTableModel getRtm() {
+        return rtm;
+    }
+
+    public void setRtm(RestaurantTableModel rtm) {
+        this.rtm = rtm;
+    }
+
+    public JTable getTblRestaurants() {
+        return tblRestaurants;
+    }
+
+    public void setTblRestaurants(JTable tblRestaurants) {
+        this.tblRestaurants = tblRestaurants;
+    }
+
     /**
      * Creates new form AllRestaurantsForm
      */
-    public AllRestaurantsForm() {
+    public AllRestaurantsForm() throws Exception {
         initComponents();
+        setTableModels();
+        setLocationRelativeTo(null);
+        rtm.setList(Controller.getInstace().getAllRestaurants());
+        tblRestaurants.setModel(rtm);
     }
 
     /**
@@ -28,21 +56,180 @@ public class AllRestaurantsForm extends GenericForm {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblRestaurants = new javax.swing.JTable();
+        panelSearch = new javax.swing.JPanel();
+        lblSearch = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtAddress = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
+        txtPIB = new javax.swing.JTextField();
+        btnFind = new javax.swing.JButton();
+        btnBackToMain = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tblRestaurants.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblRestaurants);
+
+        panelSearch.setBackground(new java.awt.Color(255, 255, 255));
+        panelSearch.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSearch.setText("Pretražite restorane po nekom od sledećih kriterijuma:");
+
+        jLabel1.setText("PIB:");
+
+        jLabel2.setText("Naziv:");
+
+        jLabel3.setText("Adresa:");
+
+        btnFind.setText("Pretraži");
+        btnFind.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFindActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelSearchLayout = new javax.swing.GroupLayout(panelSearch);
+        panelSearch.setLayout(panelSearchLayout);
+        panelSearchLayout.setHorizontalGroup(
+            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSearchLayout.createSequentialGroup()
+                .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnFind)
+                    .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelSearchLayout.createSequentialGroup()
+                            .addGap(24, 24, 24)
+                            .addComponent(lblSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelSearchLayout.createSequentialGroup()
+                            .addGap(54, 54, 54)
+                            .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(42, 42, 42)
+                            .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtAddress)
+                                .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                            .addGap(96, 96, 96)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtPIB, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(77, Short.MAX_VALUE))
+        );
+        panelSearchLayout.setVerticalGroup(
+            panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSearchLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(lblSearch)
+                .addGap(26, 26, 26)
+                .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtPIB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(panelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFind)
+                .addGap(22, 22, 22))
+        );
+
+        btnBackToMain.setText("Nazad na glavnu formu");
+        btnBackToMain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackToMainActionPerformed(evt);
+            }
+        });
+
+        btnEdit.setText("Izmeni");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Restorani");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnBackToMain)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEdit))
+                        .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jLabel4)
+                .addGap(30, 30, 30)
+                .addComponent(panelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBackToMain)
+                    .addComponent(btnEdit))
+                .addGap(46, 46, 46))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBackToMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMainActionPerformed
+        goBackToMain();    }//GEN-LAST:event_btnBackToMainActionPerformed
+
+    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
+        if (validSearch()) {
+            try {
+                findRestaurants();
+            } catch (Exception ex) {
+                Logger.getLogger(AllRestaurantsForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Neispravni parametri pretrage");
+        }    }//GEN-LAST:event_btnFindActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+       int selected = tblRestaurants.getSelectedRow();
+        if (selected != -1) {
+            try {
+                editRestaurant(rtm.getList().get(selected).getId());
+            } catch (Exception ex) {
+                Logger.getLogger(AllRestaurantsForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Odaberite restoran koji želite da izmenite.");
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -74,7 +261,11 @@ public class AllRestaurantsForm extends GenericForm {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AllRestaurantsForm().setVisible(true);
+                try {
+                    new AllRestaurantsForm().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(AllRestaurantsForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -90,11 +281,6 @@ public class AllRestaurantsForm extends GenericForm {
     }
 
     @Override
-    void setTableModels() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     void populateTable() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
@@ -104,6 +290,87 @@ public class AllRestaurantsForm extends GenericForm {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    @Override
+    void setTableModels() {
+        tblRestaurants.setModel(rtm);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBackToMain;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnFind;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblSearch;
+    private javax.swing.JPanel panelSearch;
+    private javax.swing.JTable tblRestaurants;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtPIB;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validSearch() {
+        if (validID() && validAddress() && validName()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void findRestaurants() throws Exception {
+        HashMap<String, String> criteria = new HashMap<>();
+        if (!txtPIB.getText().isEmpty()) {
+            criteria.put("pib", txtPIB.getText());
+        }
+        if (!txtName.getText().isEmpty()) {
+            criteria.put("name", txtName.getText());
+        }
+        if (!txtAddress.getText().isEmpty()) {
+            criteria.put("address", txtAddress.getText());
+        }
+
+        Controller.getInstace().findRestaurants(criteria, this);
+        JOptionPane.showMessageDialog(this, "Sistem je našao restorane po zadatoj vrednosti.");
+    }
+
+    private boolean validID() {
+        String pib = txtPIB.getText();
+        if (pib.length() == 8 && pib.charAt(0) != '0') {
+            if (pib.charAt(0) == '1' && pib.charAt(7) == '0') {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validAddress() {
+        String address = txtAddress.getText();
+        if (address.length() > 1) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validName() {
+        String name = txtName.getText();
+        if (name.length() > 1) {
+            return true;
+        }
+        return false;
+    }
+
+    private void editRestaurant(String id) throws Exception {
+        RestaurantForm form = new RestaurantForm();
+        form.setParentForm(this);
+        HashMap<String, String> hashMapRes = Controller.getInstace().findRestaurant(id);
+        form.setId(hashMapRes.get("pib"));
+        form.setAddress(hashMapRes.get("address"));
+        form.setName(hashMapRes.get("name"));
+        form.populateForm();
+        form.setVisible(true);
+        dispose();
+    }
 }

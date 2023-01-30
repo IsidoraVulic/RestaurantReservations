@@ -156,10 +156,8 @@ public class ProcessRequests extends Thread{
                             response.setResult(restaurants);
                             break;
                         case GET_ALL_TABLES:
-                            pib = (String) request.getArgument();
-                            date = (LocalDate) request.getArgument();
-                            time = (LocalTime) request.getArgument();
-                            ArrayList<Table> tables = Controller.vratiInstancu().getAllTables(pib, date, time);
+                            reservation = (Reservation) request.getArgument();
+                            ArrayList<Table> tables = Controller.vratiInstancu().getAllTables(reservation);
                             response.setResult(tables);
                             break;
                         case GET_ALL_GUESTS:

@@ -16,10 +16,13 @@ import domain.User;
 import exception.ServerException;
 import java.io.IOException;
 import java.net.Socket;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import view.form.AllGuestsForm;
+import view.form.AllRestaurantsForm;
 import view.form.ReservationForm;
 import view.form.TableForm;
 import view.form.tablemodel.GuestTableModel;
@@ -33,6 +36,7 @@ import view.form.tablemodel.TableTableModel;
 public class Controller {
 
     public static Controller instance;
+
 
     private Controller() {
 
@@ -59,21 +63,18 @@ public class Controller {
         }
     }
 
-    public HashMap<String, String> login(String username, String password) throws ServerException, Exception {
-        User user = new User();
+    public User login(String username, String password) throws ServerException, Exception {
+        User user=new User();
         user.setUsername(username);
         user.setPassword(password);
-
-        User loggedUser = (User) sendRequest(Operation.LOGIN, user);
-        if (loggedUser.getId() != null) {
-            HashMap<String, String> loggedUserHash = new HashMap<>();
-            loggedUserHash.put("UserID", loggedUser.getIDvalue());
-            loggedUserHash.put("FirstName", loggedUser.getFirstName());
-            loggedUserHash.put("LastName", loggedUser.getLastName());
-            loggedUserHash.put("Username", loggedUser.getUsername());
-            return loggedUserHash;
+        Request request=new Request(Operation.LOGIN, user);
+        Communication.getInstance().sendRequest(request);
+        Response response=(Response)Communication.getInstance().readResponse();
+        if(response.getException()==null){
+            return (User)response.getResult();
+        }else{
+            throw response.getException();
         }
-        return null;
     }
 
     public HashMap<String, String> createObject(String objectName) throws Exception {
@@ -81,7 +82,7 @@ public class Controller {
             case "restaurant":
                 Restaurant restaurant = (Restaurant) sendRequest(Operation.CREATE_RESTAURANT, null);
                 HashMap<String, String> hashMapRestaurant = new HashMap<>();
-                hashMapRestaurant.put("pib", restaurant.getID());
+                hashMapRestaurant.put("pib", restaurant.getId());
                 hashMapRestaurant.put("name", restaurant.getName());
                 hashMapRestaurant.put("address", restaurant.getAddress());
                 return hashMapRestaurant;
@@ -91,7 +92,7 @@ public class Controller {
                 hashMapGuest.put("id", newGuest.getIDvalue());
                 return hashMapGuest;
             default:
-                throw new Exception("Pokušavate da kreirate nepoznat objekta.");
+                throw new Exception("Pokušavate da kreirate nepoznat objekat.");
         }
     }
 
@@ -100,9 +101,9 @@ public class Controller {
             case "restaurant":
                 Restaurant resturant = new Restaurant();
                 resturant.setName(objectToSave.get("name"));
-                resturant.setID(objectToSave.get("pib"));
+                resturant.setId(objectToSave.get("pib"));
                 resturant.setAddress(objectToSave.get("address"));
-                if (sendRequest(Operation.SAVE_RESERVATION, resturant) != null) {
+                if (sendRequest(Operation.SAVE_RESTAURANT, resturant) != null) {
                     return true;
                 }
                 break;
@@ -119,6 +120,14 @@ public class Controller {
         return false;
     }
 
+    public void findRestaurants(HashMap criteria, AllRestaurantsForm form) throws Exception {
+        ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) sendRequest(Operation.FIND_RESTAURANTS, criteria);
+        RestaurantTableModel tm = new RestaurantTableModel();
+        tm.setList(restaurants);
+        form.getRtm().setList(restaurants);
+        form.getTblRestaurants().setModel(tm);
+    }
+    
     public void findRestaurants(HashMap criteria, TableForm form) throws Exception {
         ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) sendRequest(Operation.FIND_RESTAURANTS, criteria);
         RestaurantTableModel tm = new RestaurantTableModel();
@@ -129,10 +138,10 @@ public class Controller {
 
     public HashMap<String, String> findRestaurant(String pib) throws Exception {
         Restaurant restaurant = new Restaurant();
-        restaurant.setID(pib);
+        restaurant.setId(pib);
         restaurant = (Restaurant) sendRequest(Operation.FIND_RESTAURANT, restaurant);
         HashMap<String, String> hashMapRestaurant = new HashMap<>();
-        hashMapRestaurant.put("pib", restaurant.getIDvalue());
+        hashMapRestaurant.put("pib", restaurant.getId());
         hashMapRestaurant.put("name", restaurant.getName());
         hashMapRestaurant.put("address", restaurant.getAddress());
         return hashMapRestaurant;
@@ -177,7 +186,7 @@ public class Controller {
 
     public boolean saveGuest(HashMap<String, String> data) throws Exception {
         Guest guest = new Guest();
-        guest.setID(data.get("id"));
+        guest.setId(data.get("id"));
         guest.setEmail(data.get("email"));
         guest.setFirstname(data.get("firstname"));
         guest.setLastname(data.get("lastname"));
@@ -190,7 +199,7 @@ public class Controller {
         Guest guest = new Guest();
         guest.setID(guestID);
         guest = (Guest) sendRequest(Operation.FIND_GUEST, guest);
-        hashMapGuest.put("id", guest.getIDvalue());
+        hashMapGuest.put("id", guest.getId());
         hashMapGuest.put("firstname", guest.getFirstname());
         hashMapGuest.put("lastname", guest.getLastname());
         hashMapGuest.put("contact", guest.getContact());
@@ -217,7 +226,7 @@ public class Controller {
         g.setID(data.get("guestID"));
         User u = new User();
         u.setID(data.get("userID"));
-        Reservation r = new Reservation(null, g, t, u, null, null, null);
+        Reservation r = new Reservation(null, g, t, u, LocalDate.parse(data.get("date")), LocalTime.parse(data.get("time")), data.get("note"));
         return (boolean) sendRequest(Operation.SAVE_RESERVATION, r);
     }
     
@@ -251,8 +260,8 @@ public class Controller {
 
     }
     
-     public void setTables(String pib, ReservationForm form) throws Exception {
-        ArrayList<Table> tables = (ArrayList<Table>) sendRequest(Operation.FIND_TABLES, pib);
+     public void setTables(Reservation reservation, ReservationForm form) throws Exception {
+        ArrayList<Table> tables = (ArrayList<Table>) sendRequest(Operation.GET_ALL_TABLES, reservation);
         TableTableModel ttm = new TableTableModel();
         ttm.setList(tables);
         form.setTtm(ttm);

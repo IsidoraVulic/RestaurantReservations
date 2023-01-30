@@ -4,19 +4,79 @@
  */
 package view.form;
 
+import controller.Controller;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author RYZEN
  */
-public class AllRestaurantsForm extends GenericForm {
+public class RestaurantForm extends GenericForm {
+
+    private AllRestaurantsForm parentForm;
+    private String id;
+    private String name;
+    private String address;
+    private String status; //add or edit  
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+        if (status.equals("add")) {
+            JOptionPane.showMessageDialog(parentForm, "Sistem je kreirao novi restoran");
+            createRestaurant();
+        }
+        setFormName();
+        lockID();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public AllRestaurantsForm getParentForm() {
+        return parentForm;
+    }
+
+    public void setParentForm(AllRestaurantsForm parentForm) {
+        this.parentForm = parentForm;
+    }
 
     /**
      * Creates new form AllRestaurantsForm
      */
-    public AllRestaurantsForm() {
+    public RestaurantForm() {
         initComponents();
+        setFormName();
+        setTools();
+        lockBtn();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -28,21 +88,133 @@ public class AllRestaurantsForm extends GenericForm {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        btnCreateNew = new javax.swing.JButton();
+        txtPIB = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
+        txtAddress = new javax.swing.JTextField();
+        btnSave = new javax.swing.JButton();
+        btnBackToMain = new javax.swing.JButton();
+        lblInfo = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("PIB:");
+
+        jLabel2.setText("Naziv:");
+
+        jLabel3.setText("Adresa:");
+
+        btnCreateNew.setText("Kreiraj restoran");
+        btnCreateNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateNewActionPerformed(evt);
+            }
+        });
+
+        btnSave.setText("Sačuvaj restoran");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnBackToMain.setText("Nazad");
+        btnBackToMain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackToMainActionPerformed(evt);
+            }
+        });
+
+        lblInfo.setText("(?)");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Restoran");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPIB)
+                            .addComponent(txtName)
+                            .addComponent(txtAddress)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBackToMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSave, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnCreateNew, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblInfo)
+                .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCreateNew)
+                    .addComponent(jLabel4))
+                .addGap(61, 61, 61)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtPIB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSave)
+                    .addComponent(btnBackToMain)
+                    .addComponent(lblInfo))
+                .addGap(51, 51, 51))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBackToMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMainActionPerformed
+        goBackToMain();
+    }//GEN-LAST:event_btnBackToMainActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        if (correctData()) {
+            try {
+                saveRestaurant();
+            } catch (Exception ex) {
+                Logger.getLogger(RestaurantForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Neispravan unos, pogledajte napomenu za više informacija.");
+        }    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnCreateNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateNewActionPerformed
+        HashMap<String, String> newRestaurant = createObject();
+        if (newRestaurant != null) {
+            fillData(newRestaurant);
+            btnSave.setEnabled(true);
+            JOptionPane.showMessageDialog(this, "Sistem je kreirao novi restoran.");
+        }    }//GEN-LAST:event_btnCreateNewActionPerformed
 
     /**
      * @param args the command line arguments
@@ -61,32 +233,38 @@ public class AllRestaurantsForm extends GenericForm {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AllRestaurantsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RestaurantForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AllRestaurantsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RestaurantForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AllRestaurantsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RestaurantForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AllRestaurantsForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RestaurantForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AllRestaurantsForm().setVisible(true);
+                new RestaurantForm().setVisible(true);
             }
         });
     }
 
     @Override
     HashMap<String, String> createObject() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            return Controller.getInstace().createObject("restaurant");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Sistem ne može da kreira restoran", "Greška", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
     }
 
     @Override
     void setFormName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.setTitle("Forma za rad sa restoranima");
     }
 
     @Override
@@ -101,9 +279,115 @@ public class AllRestaurantsForm extends GenericForm {
 
     @Override
     void setTools() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        lblInfo.setToolTipText("Adresa i naziv restorana ne smeju biti prazni niti podrazumevani tekst. PIB počinju od broja 10000001 i završavaju se brojem 99999999");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBackToMain;
+    private javax.swing.JButton btnCreateNew;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel lblInfo;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtPIB;
     // End of variables declaration//GEN-END:variables
+
+    private void lockBtn() {
+        btnSave.setEnabled(false);
+    }
+
+    private boolean correctData() {
+        if (correctAddress() && correctName() && correctPIB()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void saveRestaurant() throws Exception {
+        HashMap<String, String> hashMapRestaurant = getData();
+        if (Controller.getInstace().saveObject(hashMapRestaurant)) {
+            btnSave.setEnabled(false);
+            JOptionPane.showMessageDialog(this, "Sistem je zapamtio restoran: \n Naziv restorana: " + hashMapRestaurant.get("name")
+                    + "\n Adresa: " + hashMapRestaurant.get("address")
+                    + "\n PIB: " + hashMapRestaurant.get("pib"));
+            emptyFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Sistem ne može da zapamti restoran.");
+        }
+    }
+
+    private boolean correctAddress() {
+        String address = txtAddress.getText();
+        if (address.length() > 1) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean correctName() {
+        String name = txtName.getText();
+        if (name.length() > 1) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean correctPIB() {
+        String pib = txtPIB.getText();
+        if (pib.length() == 8 && pib.charAt(0) != '0') {
+            if (pib.charAt(0) == '1' && pib.charAt(7) == '0') {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private HashMap<String, String> getData() {
+        HashMap<String, String> hashMapRestaurant = new HashMap<>();
+        hashMapRestaurant.put("type", "restaurant");
+        hashMapRestaurant.put("pib", txtPIB.getText());
+        hashMapRestaurant.put("name", txtName.getText());
+        hashMapRestaurant.put("address", txtAddress.getText());
+
+        return hashMapRestaurant;
+    }
+
+    private void emptyFields() {
+        txtAddress.setText("");
+        txtName.setText("");
+        txtPIB.setText("");
+    }
+
+    private void fillData(HashMap<String, String> newRestaurant) {
+        txtAddress.setText(newRestaurant.get("address"));
+        txtName.setText(newRestaurant.get("name"));
+        txtPIB.setText(newRestaurant.get("pib"));
+    }
+
+    void populateForm() {
+
+        if (id != null) {
+            txtPIB.setText(id);
+        }
+        if (name != null) {
+            txtName.setText(name);
+        }
+        if (address != null) {
+            txtAddress.setText(address);
+        }
+    }
+
+    private void createRestaurant() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void lockID() {
+        txtPIB.setEditable(false);
+    }
+
 }

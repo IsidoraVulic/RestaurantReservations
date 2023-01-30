@@ -21,7 +21,7 @@ public class SOFindRestaurant extends GenericSystemOperation {
     @Override
     protected void executeOperation() throws ServerException {
         try {
-            restaurant = (Restaurant) dbb.getByID(params, params.getID());
+            restaurant = (Restaurant) dbb.getByID(params, params.getId());
         } catch (Exception ex) {
             Logger.getLogger(SOFindRestaurant.class.getName()).log(Level.SEVERE, null, ex);
         }

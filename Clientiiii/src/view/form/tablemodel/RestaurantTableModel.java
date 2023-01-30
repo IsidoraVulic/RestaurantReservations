@@ -59,5 +59,7 @@ public class RestaurantTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
     
-    
+    public ArrayList<Restaurant> getList() {
+        return list;
+    }
 }

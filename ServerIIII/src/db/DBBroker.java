@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package db;
+
 import domain.GenericEntity;
 import domain.Guest;
 import domain.Reservation;
@@ -29,15 +30,15 @@ import java.util.HashMap;
  * @author RYZEN
  */
 public class DBBroker {
-    
+
     private Connection connection;
-    
-    public DBBroker(){
-        
+
+    public DBBroker() {
+
     }
-    
-    public void connect() throws ServerException, IOException, SQLException{
-    try {
+
+    public void connect() throws ServerException, IOException, SQLException, ClassNotFoundException {
+        try {
             Class.forName(Util.getInstance().getDriver());
             String url = Util.getInstance().getURL();
             String user = Util.getInstance().getUser();
@@ -46,57 +47,58 @@ public class DBBroker {
             connection.setAutoCommit(false);
 
         } catch (IOException ex) {
+            ex.printStackTrace();
             throw new ServerException("Greska kod citanja iz properties fajla!");
-        } catch (ClassNotFoundException ex) {
-            throw new ServerException("Drajver nije pronadjen!");
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new ServerException("Konekcija na bazu neuspesna!");
         }
     }
-    
-    public void disconnect() throws ServerException{
-         try {
+
+    public void disconnect() throws ServerException {
+        try {
             connection.close();
         } catch (SQLException ex) {
             throw new ServerException("Raskidanje konekcije neuspesno!");
         }
     }
-    
-    public void commit() throws ServerException{
-        try{
+
+    public void commit() throws ServerException {
+        try {
             connection.commit();
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             throw new ServerException("Transakcija nije uspesno potvrdjena");
         }
     }
-    
-    public void rollback() throws ServerException{
-        try{
+
+    public void rollback() throws ServerException {
+        try {
             connection.rollback();
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             throw new ServerException("Transakcija nije uspesno ponistena");
         }
     }
-    
-    public User login(User user) throws ServerException{
-        try{
+
+    public User login(User user) throws ServerException {
+        try {
             String upit = "SELECT * FROM user u WHERE u.Username = ?";
             PreparedStatement ps = connection.prepareStatement(upit);
             ps.setString(1, user.getUsername());
             ResultSet rs = ps.executeQuery();
-            if (rs.next() && rs.getString("Password").equals(HashFunction.napraviHash(user.getPassword()))) {
-                user.setID(rs.getString("u.UserID"));
+            if (rs.next() && rs.getString("Password").equals(user.getPassword())) {
+                user.setId(rs.getString("u.UserID"));
                 user.setFirstName(rs.getString("u.FirstName"));
                 user.setLastName(rs.getString("u.LastName"));
                 user.setPassword(rs.getString("u.Password"));
+                System.out.println(user.toString());
                 return user;
             }
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             throw new ServerException("Greska pri traženju korisnika");
         }
         return new User();
     }
-    
+
     public List<GenericEntity> getAll(GenericEntity e) throws ServerException, Exception {
         try {
             String upit = "SELECT * FROM " + e.getTableName();
@@ -109,21 +111,22 @@ public class DBBroker {
             throw new ServerException("Server ne moze da prikaže podatke o " + e.getClass().getName() + ".");
         }
     }
-    
+
     public GenericEntity getByID(GenericEntity o, String ID) throws ServerException, Exception {
-        String upit = "SELECT * FROM " + o.getTableName()+ " WHERE " + o.getID()+ "=" + "'" + ID + "'";
+        String upit = "SELECT * FROM " + o.getTableName() + " WHERE " + o.getID() + "=" + "'" + ID + "'";
         try {
             Statement s = connection.createStatement();
             ResultSet rs = s.executeQuery(upit);
             List<GenericEntity> list = o.getList(rs);
             s.close();
+            System.out.println(upit);
             return list.get(0);
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new ServerException(ex.getMessage());
         }
     }
-    
+
     public GenericEntity edit(GenericEntity o) {
         String upit = String.format("UPDATE %s SET %s WHERE %s = '%s'", o.getTableName(), o.getUpdate(), o.getID(), o.getIDvalue());
         try {
@@ -136,7 +139,7 @@ public class DBBroker {
         }
         return null;
     }
-    
+
     public GenericEntity delete(GenericEntity o) throws ServerException {
         try {
             String upit = String.format("DELETE FROM %s WHERE %s = %s", o.getTableName(), o.getID(), o.getIDvalue());
@@ -149,7 +152,7 @@ public class DBBroker {
         }
         return o;
     }
-    
+
     public ArrayList<Table> findTables(String id) throws ServerException, Exception {
         ArrayList<Table> tables = new ArrayList<>();
         try {
@@ -167,7 +170,7 @@ public class DBBroker {
         }
         return tables;
     }
-    
+
     public GenericEntity save(GenericEntity o) throws ServerException {
         try {
             String upit = String.format("INSERT INTO %s VALUES (%s)", o.getTableName(), o.getInsertValues());
@@ -175,12 +178,12 @@ public class DBBroker {
             s.executeUpdate(upit);
             s.close();
             return o;
-       
+
         } catch (SQLException ex) {
             throw new ServerException("Greska u SQL upitu.");
         }
     }
-    
+
     public ArrayList<Restaurant> findRestaurants(HashMap<String, String> criteria) throws ServerException, Exception {
         String upit = "SELECT * FROM restaurant r";
         ArrayList<Restaurant> restaurants = new ArrayList<>();
@@ -191,9 +194,12 @@ public class DBBroker {
             upit += "r.Name LIKE '%" + criteria.get("name") + "%' AND ";
         }
         if (criteria.get("address") != null) {
-            upit += "r.Address = '" + criteria.get("address") + "'";
+            upit += "r.Address = '" + criteria.get("address") + "%' AND ";
         }
-       
+
+        if (criteria.get("PIB") != null) {
+            upit += "r.RestaurantID = '" + criteria.get("PIB") + "'";
+        }
         if (upit.substring(upit.length() - 2, upit.length()).equals("AND ")) {
             upit = upit.substring(0, upit.length() - 2);
         }
@@ -209,42 +215,47 @@ public class DBBroker {
         }
         return restaurants;
     }
-    
+
     public ArrayList<Guest> findGuests(HashMap<String, String> criteria) throws ServerException, Exception {
         String upit = "SELECT * FROM guest g";
         ArrayList<Guest> guests = new ArrayList<>();
-        if (criteria.size() > 0) {
-            upit += " WHERE ";
-        }
-        if (criteria.get("firstname") != null) {
-            upit += "g.FirstName LIKE '%" + criteria.get("firstname") + "%' AND ";
-        }
-        if (criteria.get("lastname") != null) {
-            upit += "g.LastName LIKE '%" + criteria.get("lastname") + "%' AND ";
-        }
-        if (criteria.get("id") != null) {
-            upit += "g.GuestID= '" + criteria.get("id") + "'";
-        }
-        if (upit.substring(upit.length() - 3, upit.length()).equals("AND ")) {
-            upit = upit.substring(0, upit.length() - 3);
+        if (criteria != null) {
+            if (criteria.size() > 0) {
+                upit += " WHERE ";
+            }
+            if (criteria.get("firstname") != null) {
+                upit += "g.FirstName LIKE '%" + criteria.get("firstname") + "%' AND ";
+            }
+            if (criteria.get("lastname") != null) {
+                upit += "g.LastName LIKE '%" + criteria.get("lastname") + "%' AND ";
+            }
+            if (criteria.get("id") != null) {
+                upit += "g.GuestID= '" + criteria.get("id") + "'";
+            }
+            System.out.println(upit.substring(upit.length() - 4, upit.length()).equals("AND "));
+            if (upit.substring(upit.length() - 4, upit.length()).equals("AND ")) {
+                upit = upit.substring(0, upit.length() - 4);
+            }
         }
         try {
             Statement s = connection.createStatement();
+            System.out.println(upit);
             ResultSet rs = s.executeQuery(upit);
             ArrayList<GenericEntity> odoLista = (ArrayList<GenericEntity>) new Guest().getList(rs);
             for (GenericEntity opstiDomenskiObjekat : odoLista) {
                 guests.add((Guest) opstiDomenskiObjekat);
+                System.out.println(opstiDomenskiObjekat);
             }
         } catch (SQLException ex) {
-            throw new ServerException("Greski pri kreiranju upita");
+            throw new ServerException("Greska pri kreiranju upita");
         }
         return guests;
     }
-    
+
     public ArrayList<Table> findTakenTables(Guest guest) throws ServerException, Exception {
         ArrayList<Table> tables = new ArrayList<>();
         try {
-            String upit = "SELECT t.* FROM reservation r JOIN table t ON r.ReservationID = t.ReservationID WHERE r.GuestID = '" + guest.getID()+ "'";
+            String upit = "SELECT t.* FROM reservation r JOIN table t ON r.ReservationID = t.ReservationID WHERE r.GuestID = '" + guest.getID() + "'";
             Statement s = connection.createStatement();
             ResultSet rs = s.executeQuery(upit);
             List<GenericEntity> listaObjekata = new Table().getList(rs);
@@ -258,17 +269,18 @@ public class DBBroker {
         }
         return tables;
     }
-    
-    public ArrayList<Table> getAllTables(String PIB, LocalDate date, LocalTime time) throws ServerException, Exception {
+
+    public ArrayList<Table> getAllTables(Reservation reservation) throws ServerException, Exception {
         ArrayList<Table> tables = new ArrayList<>();
         try {
             String upit;
-            if (PIB != null) {
-               
-                upit = "SELECT * FROM table t where t.TableID " +
-                        "NOT IN (SELECT TableID from reservation r WHERE r.Date IS '" + java.sql.Date.valueOf(date) + "' OR"
-                        + "TIMEDIFF(r.Time, '"+ java.sql.Time.valueOf(time) +"') > 3";
-                       
+            if (reservation != null) {
+
+                upit = "SELECT * FROM reservation r JOIN table t ON t.TableID=r.TableID "
+                        + "WHERE r.Date IS '" + java.sql.Date.valueOf(reservation.getDate()) + "' AND"
+                        + " TIMEDIFF(r.Time, '" + java.sql.Time.valueOf(reservation.getTime()) + "') > 3 AND "
+                        + "t.RestaurantID = '" + reservation.getTable().getPib() + "'";
+
             } else {
                 throw new ServerException("Greska u upitu");
             }
@@ -285,7 +297,7 @@ public class DBBroker {
         }
         return tables;
     }
-    
+
     public GenericEntity saveReservation(Reservation r) throws ServerException {
         try {
             String upit = String.format("INSERT INTO reservation(ReservationID, GuestID, TableID, UserID, Date, Time, Note) VALUES (%s)", r.getInsertValues());
@@ -297,6 +309,5 @@ public class DBBroker {
             throw new ServerException("Greska u SQL upitu.");
         }
     }
-
 
 }

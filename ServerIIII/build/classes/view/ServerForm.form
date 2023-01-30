@@ -27,13 +27,14 @@
               <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="lblStatus" min="-2" pref="37" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                      <Component id="lblStatus" min="-2" pref="49" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblPokrenut" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="btnStartServer" min="-2" pref="220" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="84" max="32767" attributes="0"/>
+              <EmptySpace pref="109" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -42,7 +43,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
               <Component id="btnStartServer" min="-2" pref="95" max="-2" attributes="0"/>
-              <EmptySpace pref="53" max="32767" attributes="0"/>
+              <EmptySpace pref="59" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPokrenut" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -66,11 +67,17 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblStatus">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Status:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblPokrenut">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="14" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Server nije pokrenut"/>
       </Properties>
     </Component>

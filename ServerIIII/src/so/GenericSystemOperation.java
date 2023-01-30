@@ -20,7 +20,7 @@ public abstract class GenericSystemOperation {
         this.dbb = new DBBroker();
     }
     
-    synchronized public void execute() throws ServerException, IOException, SQLException {
+    synchronized public void execute() throws ServerException, IOException, SQLException, ClassNotFoundException {
         openConnection();
         try {
             executeOperation();
@@ -45,7 +45,7 @@ public abstract class GenericSystemOperation {
         dbb.disconnect();
     }
 
-    private void openConnection() throws ServerException, IOException, SQLException {
+    private void openConnection() throws ServerException, IOException, SQLException, ClassNotFoundException {
         dbb.connect();
     }
 

@@ -21,7 +21,7 @@ public class SOFindGuest extends GenericSystemOperation {
     @Override
     protected void executeOperation() throws ServerException {
         try {
-            completeGuest = (Guest) dbb.getByID(guest, guest.getID());
+            completeGuest = (Guest) dbb.getByID(guest, guest.getId());
         } catch (Exception ex) {
             Logger.getLogger(SOFindGuest.class.getName()).log(Level.SEVERE, null, ex);
         }

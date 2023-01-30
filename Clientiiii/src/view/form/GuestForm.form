@@ -54,7 +54,7 @@
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="btnBack" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="195" max="32767" attributes="0"/>
+                              <EmptySpace pref="190" max="32767" attributes="0"/>
                               <Component id="btnSave" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -108,7 +108,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="18" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="GuestID:"/>
+        <Property name="text" type="java.lang.String" value="ID gosta:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblFirstname">
@@ -116,7 +116,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="First name:"/>
+        <Property name="text" type="java.lang.String" value="Ime:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblLastname">
@@ -124,7 +124,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Last name:"/>
+        <Property name="text" type="java.lang.String" value="Prezime:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblContact">
@@ -132,7 +132,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Contact:"/>
+        <Property name="text" type="java.lang.String" value="Telefon:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEmail">
@@ -161,7 +161,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Save"/>
+        <Property name="text" type="java.lang.String" value="Sa&#x10d;uvaj"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveActionPerformed"/>
@@ -172,7 +172,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Back"/>
+        <Property name="text" type="java.lang.String" value="Nazad"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBackActionPerformed"/>

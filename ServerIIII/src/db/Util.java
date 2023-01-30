@@ -14,6 +14,7 @@ import java.util.Properties;
  * @author RYZEN
  */
 public class Util {
+
     private Properties properties;
     private static Util instance;
 
@@ -24,8 +25,9 @@ public class Util {
     }
 
     public static Util getInstance() throws IOException {
-        if (instance == null) 
+        if (instance == null) {
             instance = new Util();
+        }
         return instance;
     }
 

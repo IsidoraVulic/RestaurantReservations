@@ -30,6 +30,7 @@ public class GuestForm extends GenericForm {
 
     public GuestForm() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -58,16 +59,16 @@ public class GuestForm extends GenericForm {
         setTitle("Guest");
 
         lblGuestID.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblGuestID.setText("GuestID:");
+        lblGuestID.setText("ID gosta:");
 
         lblFirstname.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblFirstname.setText("First name:");
+        lblFirstname.setText("Ime:");
 
         lblLastname.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblLastname.setText("Last name:");
+        lblLastname.setText("Prezime:");
 
         lblContact.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblContact.setText("Contact:");
+        lblContact.setText("Telefon:");
 
         lblEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmail.setText("Email:");
@@ -79,7 +80,7 @@ public class GuestForm extends GenericForm {
         });
 
         btnSave.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnSave.setText("Save");
+        btnSave.setText("Sačuvaj");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveActionPerformed(evt);
@@ -87,7 +88,7 @@ public class GuestForm extends GenericForm {
         });
 
         btnBack.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnBack.setText("Back");
+        btnBack.setText("Nazad");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
@@ -123,7 +124,7 @@ public class GuestForm extends GenericForm {
                                     .addComponent(txtEmail)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnBack)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 190, Short.MAX_VALUE)
                                 .addComponent(btnSave)))
                         .addGap(36, 36, 36))))
         );
@@ -296,8 +297,14 @@ public class GuestForm extends GenericForm {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(String status) throws Exception {
         this.status = status;
+        if (status.equals("add")) {
+            JOptionPane.showMessageDialog(parentForm, "Sistem je kreirao novog gosta");
+            createGuest();
+        }
+        setFormName();
+        lockID();
     }
 
     public JButton getBtnBack() {
@@ -407,9 +414,9 @@ public class GuestForm extends GenericForm {
         boolean success = Controller.getInstace().saveGuest(getFormData());
         if (success) {
             closeForm();
-            JOptionPane.showMessageDialog(parentForm, "Sistem je zapamtio novog člana");
+            JOptionPane.showMessageDialog(parentForm, "Sistem je zapamtio novog gosta");
         } else {
-            JOptionPane.showMessageDialog(parentForm, "Sistem ne može da zapamti novog člana");
+            JOptionPane.showMessageDialog(parentForm, "Sistem ne može da zapamti novog gosta");
         }
     }
 
@@ -422,11 +429,11 @@ public class GuestForm extends GenericForm {
         boolean success = Controller.getInstace().saveGuest(getFormData());
         if (success) {
             closeForm();
-            JOptionPane.showMessageDialog(parentForm, "Sistem je zapamtio člana.");
+            JOptionPane.showMessageDialog(parentForm, "Sistem je zapamtio gosta.");
             parentForm.getGuestTableModel().setList(new ArrayList<>());
         } else {
             closeForm();
-            JOptionPane.showMessageDialog(parentForm, "Sistem ne može zapamti člana.");
+            JOptionPane.showMessageDialog(parentForm, "Sistem ne može zapamti gosta.");
         }
     }
 
@@ -496,6 +503,10 @@ public class GuestForm extends GenericForm {
     }
     
      private void disableID() {
+        txtGuestID.setEditable(false);
+    }
+
+    private void lockID() {
         txtGuestID.setEditable(false);
     }
 }

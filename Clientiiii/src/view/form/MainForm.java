@@ -4,6 +4,7 @@
  */
 package view.form;
 
+import controller.Controller;
 import domain.GenericEntity;
 import domain.Guest;
 import domain.Reservation;
@@ -11,6 +12,9 @@ import domain.Restaurant;
 import domain.Table;
 import domain.User;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,12 +23,14 @@ import java.util.HashMap;
 public class MainForm extends GenericForm {
 
     private User loggedUser;
+
     /**
      * Creates new form MainForm
      */
     public MainForm() {
         initComponents();
         setFormName();
+        setLocationRelativeTo(null);
     }
 
     public User getLoggedUser() {
@@ -36,7 +42,6 @@ public class MainForm extends GenericForm {
         lblLoggedUser.setText(loggedUser.getFirstName() + " " + loggedUser.getLastName());
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,9 +57,12 @@ public class MainForm extends GenericForm {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        itemCreateRestaurant = new javax.swing.JMenuItem();
+        itemAllRestaurants = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        itemCreateGuest = new javax.swing.JMenuItem();
+        itemAllGuests = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
 
@@ -65,26 +73,91 @@ public class MainForm extends GenericForm {
         lblWelcome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblWelcome.setText("Zdravo,");
 
-        lblLoggedUser.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLoggedUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblLoggedUser.setText("jLabel1");
 
         jMenu1.setText("Restorani");
+
+        itemCreateRestaurant.setText("Kreiraj");
+        itemCreateRestaurant.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                itemCreateRestaurantMouseClicked(evt);
+            }
+        });
+        itemCreateRestaurant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCreateRestaurantActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemCreateRestaurant);
+
+        itemAllRestaurants.setText("Svi");
+        itemAllRestaurants.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                itemAllRestaurantsMouseClicked(evt);
+            }
+        });
+        itemAllRestaurants.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAllRestaurantsActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemAllRestaurants);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Stolovi");
-
-        jMenuItem2.setText("jMenuItem2");
-        jMenu2.add(jMenuItem2);
-
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu2MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Gosti");
+
+        itemCreateGuest.setText("Kreiraj");
+        itemCreateGuest.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                itemCreateGuestMouseClicked(evt);
+            }
+        });
+        itemCreateGuest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCreateGuestActionPerformed(evt);
+            }
+        });
+        jMenu3.add(itemCreateGuest);
+
+        itemAllGuests.setText("Svi");
+        itemAllGuests.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                itemAllGuestsMouseClicked(evt);
+            }
+        });
+        itemAllGuests.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAllGuestsActionPerformed(evt);
+            }
+        });
+        jMenu3.add(itemAllGuests);
+
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("Reservacije");
+        jMenu4.setText("Rezervacije");
+        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu4MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu4);
 
         jMenu5.setText("Kraj");
+        jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu5MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
@@ -100,25 +173,96 @@ public class MainForm extends GenericForm {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(54, 54, 54)
-                        .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblLoggedUser, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(204, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblLoggedUser, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(262, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblWelcome)
-                    .addComponent(lblLoggedUser))
-                .addGap(71, 71, 71)
+                .addComponent(lblWelcome)
+                .addGap(33, 33, 33)
+                .addComponent(lblLoggedUser)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addContainerGap(154, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        try {
+            openForm(new Table());
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
+        try {
+            openForm(new Reservation());
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }     }//GEN-LAST:event_jMenu4MouseClicked
+
+    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
+        end();    }//GEN-LAST:event_jMenu5MouseClicked
+
+    private void itemAllRestaurantsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAllRestaurantsActionPerformed
+        try {
+            new AllRestaurantsForm().setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }//GEN-LAST:event_itemAllRestaurantsActionPerformed
+
+    private void itemAllRestaurantsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemAllRestaurantsMouseClicked
+        try {
+            new AllRestaurantsForm().setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_itemAllRestaurantsMouseClicked
+
+    private void itemCreateRestaurantMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemCreateRestaurantMouseClicked
+        try {
+            openForm(new Restaurant());
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }     }//GEN-LAST:event_itemCreateRestaurantMouseClicked
+
+    private void itemCreateGuestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemCreateGuestMouseClicked
+        new GuestForm().setVisible(true);
+    }//GEN-LAST:event_itemCreateGuestMouseClicked
+
+    private void itemAllGuestsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemAllGuestsMouseClicked
+        try {
+            openForm(new Guest());
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }    }//GEN-LAST:event_itemAllGuestsMouseClicked
+
+    private void itemCreateGuestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCreateGuestActionPerformed
+        new GuestForm().setVisible(true);    }//GEN-LAST:event_itemCreateGuestActionPerformed
+
+    private void itemAllGuestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAllGuestsActionPerformed
+        try {
+            openForm(new Guest());
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }     }//GEN-LAST:event_itemAllGuestsActionPerformed
+
+    private void itemCreateRestaurantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCreateRestaurantActionPerformed
+        try {
+            openForm(new Restaurant());
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }     }//GEN-LAST:event_itemCreateRestaurantActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,16 +278,24 @@ public class MainForm extends GenericForm {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -156,6 +308,10 @@ public class MainForm extends GenericForm {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itemAllGuests;
+    private javax.swing.JMenuItem itemAllRestaurants;
+    private javax.swing.JMenuItem itemCreateGuest;
+    private javax.swing.JMenuItem itemCreateRestaurant;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -164,13 +320,10 @@ public class MainForm extends GenericForm {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JLabel lblLoggedUser;
     private javax.swing.JLabel lblWelcome;
     // End of variables declaration//GEN-END:variables
 
-    
-    
     @Override
     HashMap<String, String> createObject() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -180,17 +333,19 @@ public class MainForm extends GenericForm {
     void setFormName() {
         this.setTitle("Glavna forma");
     }
-    
+
     private void openForm(GenericEntity entity) throws Exception {
         GenericForm gf;
         if (entity instanceof Restaurant) {
-            gf = new AllRestaurantsForm();
+            gf = new RestaurantForm();
         } else if (entity instanceof Table) {
             gf = new TableForm();
         } else if (entity instanceof Guest) {
             gf = new AllGuestsForm();
         } else if (entity instanceof Reservation) {
             gf = new ReservationForm();
+        } else if (entity instanceof Restaurant) {
+            gf = new RestaurantForm();
         } else {
             throw new Exception("Uneti objekat nema svoju ekransku formu");
         }
@@ -198,9 +353,16 @@ public class MainForm extends GenericForm {
         this.setVisible(false);
         gf.main = this;
     }
-    
-    private void end(){
-        
+
+    private void end() {
+        try {
+            Controller.getInstace().quit(loggedUser);
+            dispose();
+            LoginForm form = new LoginForm();
+            form.setVisible(true);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Nije moguće izlogovati se u datom trenutku.");
+        }
     }
 
     @Override

@@ -48,5 +48,10 @@ public class TableTableModel extends AbstractTableModel {
     public void setList(ArrayList<Table> list) {
         this.list = list;
     }
+    
+     @Override
+    public String getColumnName(int i) {
+        return columns[i];
+    }
 
 }
