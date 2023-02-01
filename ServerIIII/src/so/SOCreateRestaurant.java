@@ -14,13 +14,15 @@ import exception.ServerException;
 public class SOCreateRestaurant extends GenericSystemOperation {
 
     private Restaurant restaurant;
+    private Restaurant params;
 
     @Override
     protected void executeOperation() throws ServerException {
         restaurant = new Restaurant();
-        restaurant.setName("Unesite naziv restorana");
-        restaurant.setAddress("Unesite adresu restorana");
-        restaurant.setId("Unesite PIB restorana");
+        restaurant.setName(params.getName());
+        restaurant.setAddress(params.getAddress());
+        restaurant.setId(params.getId());
+        dbb.save(restaurant);
     }
 
     public Restaurant getRestaurant() {
@@ -30,5 +32,15 @@ public class SOCreateRestaurant extends GenericSystemOperation {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
+    public Restaurant getParams() {
+        return params;
+    }
+
+    public void setParams(Restaurant params) {
+        this.params = params;
+    }
+    
+    
 
 }

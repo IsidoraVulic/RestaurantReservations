@@ -163,7 +163,7 @@ public class Reservation implements Serializable, GenericEntity {
 
     @Override
     public String getInsertValues() {
-        return String.format("'%s', '%s', '%s', '%s', '%s'", id, guest.getID(), table.getID(), user.getID(), Date.valueOf(date.toString()), Time.valueOf(time.toString()));
+        return String.format("'%s', '%s', '%s', '%s', '%s', '%s', '%s'", id, guest.getId(), table.getId(), user.getId(), Date.valueOf(date.toString()), time.toString(), note);
     }
 
     @Override
@@ -213,6 +213,11 @@ public class Reservation implements Serializable, GenericEntity {
     @Override
     public void setID(String id) {
         this.id = id;
+    }
+
+    @Override
+    public String getColumnNames() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

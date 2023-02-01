@@ -169,4 +169,9 @@ public class User implements Serializable, GenericEntity {
         this.online = online;
     }
 
+    @Override
+    public String getColumnNames() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

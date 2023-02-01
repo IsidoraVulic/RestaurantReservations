@@ -45,10 +45,7 @@
                           <Component id="btnBackToMain" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="207" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnSave" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnCreateNew" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="btnSave" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -61,11 +58,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnCreateNew" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtPIB" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -106,14 +100,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Adresa:"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnCreateNew">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Kreiraj restoran"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCreateNewActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtPIB">
     </Component>

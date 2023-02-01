@@ -18,6 +18,7 @@ import java.util.List;
 import so.SOCreateGuest;
 import so.SOCreateRestaurant;
 import so.SODeleteTable;
+import so.SOEditRestaurant;
 import so.SOFindGuest;
 import so.SOFindGuests;
 import so.SOFindRestaurant;
@@ -68,8 +69,8 @@ public class Controller {
     }
 
     public Restaurant saveRestaurant(Restaurant restaurant) throws ServerException, IOException, SQLException, ClassNotFoundException {
-        SOSaveRestaurant sozk = new SOSaveRestaurant();
-        sozk.setRestaurant(restaurant);
+        SOCreateRestaurant sozk = new SOCreateRestaurant();
+        sozk.setParams(restaurant);
         sozk.execute();
         return sozk.getRestaurant();
     }
@@ -86,6 +87,13 @@ public class Controller {
         sonk.setParams(restaurant);
         sonk.execute();
         return sonk.getRestaurant();
+    }
+    
+    public Restaurant editRestaurant(Restaurant restaurant) throws ServerException, IOException, SQLException, ClassNotFoundException{
+        SOEditRestaurant soer = new SOEditRestaurant();
+        soer.setParams(restaurant);
+        soer.execute();
+        return soer.getRestaurant();
     }
 
     public Table saveTable(Table table) throws ServerException, IOException, SQLException, ClassNotFoundException {
@@ -143,9 +151,10 @@ public class Controller {
         return soulk.getRestaurants();
     }
 
-    public ArrayList<Table> getAllTables(Reservation reservation) throws ServerException, IOException, SQLException {
+    public ArrayList<Table> getAllTables(Reservation reservation) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOGetAllTables sogat = new SOGetAllTables();
         sogat.setReservation(reservation);
+        sogat.execute();
         return sogat.getTables();
     }
 
@@ -157,7 +166,7 @@ public class Controller {
 
     public boolean saveReservation(Reservation r) throws ServerException, IOException, SQLException, ClassNotFoundException {
         SOSaveReservation sozi = new SOSaveReservation();
-        sozi.setReservation(r);
+        sozi.setParams(r);
         sozi.execute();
         return sozi.isSuccess();
     }

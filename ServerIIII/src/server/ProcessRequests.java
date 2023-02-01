@@ -32,13 +32,14 @@ import java.util.logging.Logger;
  *
  * @author RYZEN
  */
-public class ProcessRequests extends Thread{
+public class ProcessRequests extends Thread {
+
     private Socket socket;
     private List<ProcessRequests> clients;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    
-    public ProcessRequests(Socket socket, List<ProcessRequests> clients){
+
+    public ProcessRequests(Socket socket, List<ProcessRequests> clients) {
         this.socket = socket;
         this.clients = clients;
     }
@@ -74,7 +75,7 @@ public class ProcessRequests extends Thread{
     public void setOut(ObjectOutputStream out) {
         this.out = out;
     }
-    
+
     public void run() {
         try {
             in = new ObjectInputStream(socket.getInputStream());
@@ -103,12 +104,19 @@ public class ProcessRequests extends Thread{
                             response.setResult(ulogovaniAdministrator);
                             break;
                         case CREATE_RESTAURANT:
-                            restaurant = Controller.vratiInstancu().createRestaurant();
+                            restaurant = (Restaurant) request.getArgument();
+                            restaurant = Controller.vratiInstancu().saveRestaurant(restaurant);
                             response.setResult(restaurant);
                             break;
                         case SAVE_RESTAURANT:
                             restaurant = (Restaurant) request.getArgument();
                             restaurant = Controller.vratiInstancu().saveRestaurant(restaurant);
+                            response.setResult(restaurant);
+                            break;
+
+                        case EDIT_RESTAURANT:
+                            restaurant = (Restaurant) request.getArgument();
+                            restaurant = Controller.vratiInstancu().editRestaurant(restaurant);
                             response.setResult(restaurant);
                             break;
                         case FIND_RESTAURANTS:
@@ -202,5 +210,4 @@ public class ProcessRequests extends Thread{
 
     }
 
-    
 }

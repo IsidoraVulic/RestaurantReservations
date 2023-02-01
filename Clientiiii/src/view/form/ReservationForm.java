@@ -8,6 +8,7 @@ import controller.Controller;
 import domain.Reservation;
 import domain.Restaurant;
 import domain.Table;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -28,6 +29,10 @@ public class ReservationForm extends GenericForm {
     private RestaurantTableModel rtm = new RestaurantTableModel();
     private GuestTableModel gtm = new GuestTableModel();
     private TableTableModel ttm = new TableTableModel();
+    
+    SimpleDateFormat dcn = new SimpleDateFormat("yyyy-MM-dd");
+    
+    //String date = dcn.format(.getDate() );
 
     public RestaurantTableModel getRtm() {
         return rtm;
@@ -85,6 +90,7 @@ public class ReservationForm extends GenericForm {
         setFormName();
         setTableModels();
         Controller.getInstace().getAll(this);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -351,17 +357,19 @@ public class ReservationForm extends GenericForm {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCheckResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckResActionPerformed
-        if (tblRestaurants.getSelectedRow() != -1 && txtDate.getDate().toString() != null && !txtTime.getText().isEmpty()) {
+        if (tblRestaurants.getSelectedRow() != -1 && dcn.format(txtDate.getDate()) != null && !txtTime.getText().isEmpty()) {
             Restaurant restaurant = new Restaurant();
             restaurant = rtm.getList().get(tblRestaurants.getSelectedRow());
-            Table table = new Table("", 0, restaurant.getID());
+            Table table = new Table("", 0, restaurant.getId());
             Reservation reservation = new Reservation();
             reservation.setTable(table);
-            reservation.setDate(LocalDate.parse(txtDate.getDate().toString()));
+            reservation.setDate(LocalDate.parse(dcn.format(txtDate.getDate())));
             reservation.setTime(LocalTime.parse(txtTime.getText()));
+            System.out.println(reservation.toString());
             try {
                 setTables(reservation);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 Logger.getLogger(ReservationForm.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -484,7 +492,7 @@ public class ReservationForm extends GenericForm {
         data.put("tableID", ttm.getList().get(tblTables.getSelectedRow()).getIDvalue());
         data.put("guestID", gtm.getList().get(tblGuests.getSelectedRow()).getIDvalue());
         data.put("userID", main.getLoggedUser().getIDvalue());
-        data.put("date", txtDate.getDate().toString());
+        data.put("date", dcn.format(txtDate.getDate()));
         data.put("time", txtTime.getText());
         data.put("note", txtNote.getText());
         boolean success = Controller.getInstace().createReservation(data);

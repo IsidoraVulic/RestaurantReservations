@@ -131,6 +131,7 @@ public class DBBroker {
         String upit = String.format("UPDATE %s SET %s WHERE %s = '%s'", o.getTableName(), o.getUpdate(), o.getID(), o.getIDvalue());
         try {
             Statement s = connection.createStatement();
+            System.out.println(upit);
             s.executeUpdate(upit);
             s.close();
             return o;
@@ -156,7 +157,8 @@ public class DBBroker {
     public ArrayList<Table> findTables(String id) throws ServerException, Exception {
         ArrayList<Table> tables = new ArrayList<>();
         try {
-            String upit = "SELECT * FROM table WHERE RestaurantID = '" + id + "'";
+            String upit = "SELECT * FROM dining_table WHERE RestaurantID = '" + id + "'";
+            System.out.println(upit);
             Statement s = connection.createStatement();
             ResultSet rs = s.executeQuery(upit);
             List<GenericEntity> lista = new Table().getList(rs);
@@ -173,10 +175,26 @@ public class DBBroker {
 
     public GenericEntity save(GenericEntity o) throws ServerException {
         try {
-            String upit = String.format("INSERT INTO %s VALUES (%s)", o.getTableName(), o.getInsertValues());
+            String upit = String.format("INSERT INTO %s (%s) VALUES (%s)", o.getTableName(), o.getColumnNames(), o.getInsertValues());
+            System.out.println(upit);
             Statement s = connection.createStatement();
             s.executeUpdate(upit);
             s.close();
+            System.out.println(upit);
+            return o;
+
+        } catch (SQLException ex) {
+            throw new ServerException("Greska u SQL upitu.");
+        }
+    }
+
+    public GenericEntity update(GenericEntity o) throws ServerException {
+        try {
+            String upit = "UPDATE " + o.getTableName() + " SET " + o.getUpdate() + " WHERE " + o.getID() + "='o.getIDvalue()'";
+            Statement s = connection.createStatement();
+            s.executeUpdate(upit);
+            s.close();
+            System.out.println(upit);
             return o;
 
         } catch (SQLException ex) {
@@ -187,22 +205,25 @@ public class DBBroker {
     public ArrayList<Restaurant> findRestaurants(HashMap<String, String> criteria) throws ServerException, Exception {
         String upit = "SELECT * FROM restaurant r";
         ArrayList<Restaurant> restaurants = new ArrayList<>();
-        if (criteria.size() > 0) {
-            upit += " WHERE ";
-        }
-        if (criteria.get("name") != null) {
-            upit += "r.Name LIKE '%" + criteria.get("name") + "%' AND ";
-        }
-        if (criteria.get("address") != null) {
-            upit += "r.Address = '" + criteria.get("address") + "%' AND ";
-        }
+        if (criteria != null) {
+            if (criteria.size() > 0) {
+                upit += " WHERE ";
+            }
+            if (criteria.get("name") != null) {
+                upit += "r.Name LIKE '%" + criteria.get("name") + "%' AND ";
+            }
+            if (criteria.get("address") != null) {
+                upit += "r.Address = '" + criteria.get("address") + "%' AND ";
+            }
 
-        if (criteria.get("PIB") != null) {
-            upit += "r.RestaurantID = '" + criteria.get("PIB") + "'";
+            if (criteria.get("pib") != null) {
+                upit += "r.RestaurantID = '" + criteria.get("pib") + "'";
+            }
+            if (upit.substring(upit.length() - 4, upit.length()).equals("AND ")) {
+                upit = upit.substring(0, upit.length() - 4);
+            }
         }
-        if (upit.substring(upit.length() - 2, upit.length()).equals("AND ")) {
-            upit = upit.substring(0, upit.length() - 2);
-        }
+        System.out.println(upit);
         try {
             Statement s = connection.createStatement();
             ResultSet rs = s.executeQuery(upit);
@@ -211,7 +232,7 @@ public class DBBroker {
                 restaurants.add((Restaurant) opstiDomenskiObjekat);
             }
         } catch (SQLException ex) {
-            throw new ServerException("Greski pri kreiranju upita");
+            throw new ServerException("Greska pri kreiranju upita");
         }
         return restaurants;
     }
@@ -276,10 +297,10 @@ public class DBBroker {
             String upit;
             if (reservation != null) {
 
-                upit = "SELECT * FROM reservation r JOIN table t ON t.TableID=r.TableID "
-                        + "WHERE r.Date IS '" + java.sql.Date.valueOf(reservation.getDate()) + "' AND"
-                        + " TIMEDIFF(r.Time, '" + java.sql.Time.valueOf(reservation.getTime()) + "') > 3 AND "
-                        + "t.RestaurantID = '" + reservation.getTable().getPib() + "'";
+                upit = "SELECT * FROM dining_table "
+                        + "WHERE TableID NOT IN " + "(SELECT r.TableID FROM reservation r JOIN dining_table t ON t.TableID=r.TableID WHERE r.Date='" + java.sql.Date.valueOf(reservation.getDate()) + "' AND"
+                        + " ABS(r.Time - '" +  java.sql.Time.valueOf(reservation.getTime()) + "') < 3" + " AND "
+                        + "t.RestaurantID = '" + reservation.getTable().getPib() + "')";
 
             } else {
                 throw new ServerException("Greska u upitu");
@@ -293,6 +314,7 @@ public class DBBroker {
             }
             s.close();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new ServerException("Server ne moze da pronadje stolove");
         }
         return tables;

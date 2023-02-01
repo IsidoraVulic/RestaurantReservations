@@ -16,15 +16,31 @@ import java.util.Date;
  */
 public class SOSaveReservation extends GenericSystemOperation {
 
+    private Reservation params;
     private Reservation reservation;
     private boolean success = false;
 
+    public Reservation getParams() {
+        return params;
+    }
+
+    public void setParams(Reservation params) {
+        this.params = params;
+    }
+
+    
+    
     @Override
     protected void executeOperation() throws ServerException {
+        reservation = new Reservation();
         String id = Integer.toString((int) (new Date().getTime() / 1000));
-        reservation.setDate(LocalDate.now());
-        reservation.setTime(LocalTime.now());
-        reservation.setID(id);
+        reservation.setDate(params.getDate());
+        reservation.setTime(params.getTime());
+        reservation.setNote(params.getNote());
+        reservation.setTable(params.getTable());
+        reservation.setUser(params.getUser());
+        reservation.setGuest(params.getGuest());
+        reservation.setId(id);
         if (dbb.saveReservation(reservation) != null) {
             success = true;
         }

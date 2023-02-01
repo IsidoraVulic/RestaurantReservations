@@ -19,8 +19,8 @@ public class SOSaveTable extends GenericSystemOperation {
 
     @Override
     protected void executeOperation() throws ServerException {
-        String id = Integer.toString(((int) (new Date().getTime() / 1000))) + HashFunction.napraviHash(table.getPib());
-        table.setID(id);
+        String id = Integer.toString(((int) (new Date().getTime() / 100000)));
+        table.setId(id);
         table = (Table) dbb.save(table);
     }
 

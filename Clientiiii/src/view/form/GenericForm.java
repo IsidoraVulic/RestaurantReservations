@@ -30,7 +30,9 @@ public abstract class GenericForm extends javax.swing.JFrame {
 
     public void goBackToMain() {
         dispose();
-        main.setVisible(true);
+        if (main != null) {
+            main.setVisible(true);
+        }
     }
 
     /**

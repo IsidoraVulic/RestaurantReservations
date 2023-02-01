@@ -28,9 +28,16 @@ public class GuestForm extends GenericForm {
     private String email;
     private String status; //add or edit        
 
-    public GuestForm() {
+    public GuestForm() throws Exception {
         initComponents();
         setLocationRelativeTo(null);
+        this.setStatus("add");
+    }
+
+    public GuestForm(String status) throws Exception {
+        initComponents();
+        setLocationRelativeTo(null);
+        this.setStatus(status);
     }
 
     /**
@@ -194,7 +201,10 @@ public class GuestForm extends GenericForm {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         dispose();
-        parentForm.setVisible(true);
+        if (parentForm != null)
+            parentForm.setVisible(true);
+        else
+            goBackToMain();
     }//GEN-LAST:event_btnBackActionPerformed
 
     /**
@@ -300,8 +310,8 @@ public class GuestForm extends GenericForm {
     public void setStatus(String status) throws Exception {
         this.status = status;
         if (status.equals("add")) {
-            JOptionPane.showMessageDialog(parentForm, "Sistem je kreirao novog gosta");
             createGuest();
+            JOptionPane.showMessageDialog(parentForm, "Sistem je kreirao novog gosta");
         }
         setFormName();
         lockID();
@@ -437,8 +447,12 @@ public class GuestForm extends GenericForm {
         }
     }
 
-    private void closeForm() {
-        parentForm.setVisible(true);
+    private void closeForm() throws Exception {
+        if (parentForm instanceof AllGuestsForm && parentForm !=null) {
+            parentForm = new AllGuestsForm();
+            parentForm.setVisible(true);
+        }
+        else goBackToMain();
         dispose();
     }
 
@@ -483,9 +497,9 @@ public class GuestForm extends GenericForm {
         }
         return false;
     }
-    
-    public void populateForm(){
-         if (guestID != null) {
+
+    public void populateForm() {
+        if (guestID != null) {
             txtGuestID.setText(guestID);
         }
         if (email != null) {
@@ -501,8 +515,8 @@ public class GuestForm extends GenericForm {
             txtContact.setText(contact);
         }
     }
-    
-     private void disableID() {
+
+    private void disableID() {
         txtGuestID.setEditable(false);
     }
 

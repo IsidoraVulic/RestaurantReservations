@@ -5,10 +5,12 @@
 package view.form;
 
 import controller.Controller;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import view.form.tablemodel.RestaurantTableModel;
 
 /**
  *
@@ -26,14 +28,13 @@ public class RestaurantForm extends GenericForm {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(String status) throws Exception {
         this.status = status;
         if (status.equals("add")) {
-            JOptionPane.showMessageDialog(parentForm, "Sistem je kreirao novi restoran");
-            createRestaurant();
+            JOptionPane.showMessageDialog(parentForm, "Unesite podatke za novi restoran");
         }
+
         setFormName();
-        lockID();
     }
 
     public String getId() {
@@ -71,12 +72,22 @@ public class RestaurantForm extends GenericForm {
     /**
      * Creates new form AllRestaurantsForm
      */
-    public RestaurantForm() {
+    public RestaurantForm() throws Exception {
         initComponents();
+        this.setStatus("add");
         setFormName();
         setTools();
-        lockBtn();
         setLocationRelativeTo(null);
+
+    }
+
+    public RestaurantForm(String status) throws Exception {
+        initComponents();
+        this.setStatus(status);
+        setFormName();
+        setTools();
+        setLocationRelativeTo(null);
+        lockId();
     }
 
     /**
@@ -91,7 +102,6 @@ public class RestaurantForm extends GenericForm {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        btnCreateNew = new javax.swing.JButton();
         txtPIB = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
         txtAddress = new javax.swing.JTextField();
@@ -107,13 +117,6 @@ public class RestaurantForm extends GenericForm {
         jLabel2.setText("Naziv:");
 
         jLabel3.setText("Adresa:");
-
-        btnCreateNew.setText("Kreiraj restoran");
-        btnCreateNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCreateNewActionPerformed(evt);
-            }
-        });
 
         btnSave.setText("Sačuvaj restoran");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -156,9 +159,7 @@ public class RestaurantForm extends GenericForm {
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnBackToMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSave, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnCreateNew, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addComponent(btnSave)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblInfo)
                 .addGap(29, 29, 29))
@@ -167,10 +168,8 @@ public class RestaurantForm extends GenericForm {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCreateNew)
-                    .addComponent(jLabel4))
-                .addGap(61, 61, 61)
+                .addComponent(jLabel4)
+                .addGap(63, 63, 63)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtPIB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -194,27 +193,42 @@ public class RestaurantForm extends GenericForm {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackToMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMainActionPerformed
-        goBackToMain();
+        dispose();
+        if (parentForm != null)
+            parentForm.setVisible(true);
+        else
+            goBackToMain();
     }//GEN-LAST:event_btnBackToMainActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if (correctData()) {
-            try {
-                saveRestaurant();
-            } catch (Exception ex) {
-                Logger.getLogger(RestaurantForm.class.getName()).log(Level.SEVERE, null, ex);
+            if (status.equals("add")) {
+                try {
+                    createRestaurant();
+                    closeForm();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Sistem ne moze da kreira restoran");
+                    Logger.getLogger(RestaurantForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (status.equals("edit")) {
+                try {
+                    lockId();
+                    editRestaurant();
+                    closeForm();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Sistem ne moze da zapamti restoran");
+                    Logger.getLogger(RestaurantForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                try {
+                    throw new Exception("Neispravan status ekranske forme!");
+                } catch (Exception ex) {
+                    Logger.getLogger(RestaurantForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Neispravan unos, pogledajte napomenu za više informacija.");
         }    }//GEN-LAST:event_btnSaveActionPerformed
-
-    private void btnCreateNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateNewActionPerformed
-        HashMap<String, String> newRestaurant = createObject();
-        if (newRestaurant != null) {
-            fillData(newRestaurant);
-            btnSave.setEnabled(true);
-            JOptionPane.showMessageDialog(this, "Sistem je kreirao novi restoran.");
-        }    }//GEN-LAST:event_btnCreateNewActionPerformed
 
     /**
      * @param args the command line arguments
@@ -247,24 +261,28 @@ public class RestaurantForm extends GenericForm {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RestaurantForm().setVisible(true);
+                try {
+                    new RestaurantForm().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(RestaurantForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     @Override
     HashMap<String, String> createObject() {
-        try {
-            return Controller.getInstace().createObject("restaurant");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Sistem ne može da kreira restoran", "Greška", JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
     }
 
     @Override
     void setFormName() {
-        this.setTitle("Forma za rad sa restoranima");
+        if (status.equals("add")) {
+            this.setTitle("Forma za kreiranje restorana");
+        } else {
+            this.setTitle("Forma za izmenu restorana");
+        }
     }
 
     @Override
@@ -284,7 +302,6 @@ public class RestaurantForm extends GenericForm {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBackToMain;
-    private javax.swing.JButton btnCreateNew;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -295,10 +312,6 @@ public class RestaurantForm extends GenericForm {
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPIB;
     // End of variables declaration//GEN-END:variables
-
-    private void lockBtn() {
-        btnSave.setEnabled(false);
-    }
 
     private boolean correctData() {
         if (correctAddress() && correctName() && correctPIB()) {
@@ -322,7 +335,7 @@ public class RestaurantForm extends GenericForm {
 
     private boolean correctAddress() {
         String address = txtAddress.getText();
-        if (address.length() > 1) {
+        if (address.length() > 1 || txtAddress.getText().isEmpty()) {
             return true;
         }
         return false;
@@ -330,7 +343,7 @@ public class RestaurantForm extends GenericForm {
 
     private boolean correctName() {
         String name = txtName.getText();
-        if (name.length() > 1) {
+        if (name.length() > 1 || txtName.getText().isEmpty()) {
             return true;
         }
         return false;
@@ -382,12 +395,41 @@ public class RestaurantForm extends GenericForm {
         }
     }
 
-    private void createRestaurant() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void createRestaurant() throws Exception {
+        boolean success = Controller.getInstace().saveObject(getData());
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Sistem je kreirao novi restoran.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Sistem ne moze da kreira novi restoran.");
+        }
+
     }
 
-    private void lockID() {
-        txtPIB.setEditable(false);
+    private void closeForm() throws Exception {
+        if (parentForm instanceof AllRestaurantsForm && parentForm != null) {
+            parentForm = new AllRestaurantsForm();
+            parentForm.setVisible(true);
+        } else {
+            goBackToMain();
+        }
+        dispose();
+    }
+
+    private void editRestaurant() throws Exception {
+        HashMap<String, String> hashMapRestaurant = getData();
+        boolean success = Controller.getInstace().editRestaurant(getData());
+        if (success) {
+            closeForm();
+            JOptionPane.showMessageDialog(parentForm, "Sistem je zapamtio restoran.");
+            parentForm.getRtm().setList(new ArrayList<>());
+        } else {
+            closeForm();
+            JOptionPane.showMessageDialog(parentForm, "Sistem ne može zapamti restoran.");
+        }
+    }
+
+    private void lockId() {
+        txtPIB.setEnabled(false);
     }
 
 }

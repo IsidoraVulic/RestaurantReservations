@@ -11,7 +11,9 @@ import domain.Reservation;
 import domain.Restaurant;
 import domain.Table;
 import domain.User;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -237,7 +239,11 @@ public class MainForm extends GenericForm {
         }     }//GEN-LAST:event_itemCreateRestaurantMouseClicked
 
     private void itemCreateGuestMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemCreateGuestMouseClicked
-        new GuestForm().setVisible(true);
+        try {
+            new GuestForm().setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_itemCreateGuestMouseClicked
 
     private void itemAllGuestsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemAllGuestsMouseClicked
@@ -247,12 +253,9 @@ public class MainForm extends GenericForm {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }    }//GEN-LAST:event_itemAllGuestsMouseClicked
 
-    private void itemCreateGuestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCreateGuestActionPerformed
-        new GuestForm().setVisible(true);    }//GEN-LAST:event_itemCreateGuestActionPerformed
-
     private void itemAllGuestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAllGuestsActionPerformed
         try {
-            openForm(new Guest());
+            new AllGuestsForm().setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }     }//GEN-LAST:event_itemAllGuestsActionPerformed
@@ -263,6 +266,13 @@ public class MainForm extends GenericForm {
         } catch (Exception ex) {
             Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
         }     }//GEN-LAST:event_itemCreateRestaurantActionPerformed
+
+    private void itemCreateGuestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCreateGuestActionPerformed
+        try {
+            openForm(new Guest());
+        } catch (Exception ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }     }//GEN-LAST:event_itemCreateGuestActionPerformed
 
     /**
      * @param args the command line arguments
@@ -341,11 +351,9 @@ public class MainForm extends GenericForm {
         } else if (entity instanceof Table) {
             gf = new TableForm();
         } else if (entity instanceof Guest) {
-            gf = new AllGuestsForm();
+            gf = new GuestForm("add");
         } else if (entity instanceof Reservation) {
             gf = new ReservationForm();
-        } else if (entity instanceof Restaurant) {
-            gf = new RestaurantForm();
         } else {
             throw new Exception("Uneti objekat nema svoju ekransku formu");
         }

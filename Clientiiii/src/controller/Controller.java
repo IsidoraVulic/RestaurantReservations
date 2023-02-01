@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.JOptionPane;
 import view.form.AllGuestsForm;
 import view.form.AllRestaurantsForm;
 import view.form.ReservationForm;
@@ -36,7 +35,6 @@ import view.form.tablemodel.TableTableModel;
 public class Controller {
 
     public static Controller instance;
-
 
     private Controller() {
 
@@ -64,15 +62,15 @@ public class Controller {
     }
 
     public User login(String username, String password) throws ServerException, Exception {
-        User user=new User();
+        User user = new User();
         user.setUsername(username);
         user.setPassword(password);
-        Request request=new Request(Operation.LOGIN, user);
+        Request request = new Request(Operation.LOGIN, user);
         Communication.getInstance().sendRequest(request);
-        Response response=(Response)Communication.getInstance().readResponse();
-        if(response.getException()==null){
-            return (User)response.getResult();
-        }else{
+        Response response = (Response) Communication.getInstance().readResponse();
+        if (response.getException() == null) {
+            return (User) response.getResult();
+        } else {
             throw response.getException();
         }
     }
@@ -110,12 +108,24 @@ public class Controller {
             case "table":
                 Table table = new Table();
                 table.setPib(objectToSave.get("pib"));
+                table.setChairs(Integer.parseInt(objectToSave.get("chairs")));
                 if (sendRequest(Operation.SAVE_TABLE, table) != null) {
                     return true;
                 }
                 break;
             default:
                 throw new Exception("Pokušavate da zapamtite nepoznat objekta.");
+        }
+        return false;
+    }
+
+    public boolean editRestaurant(HashMap<String, String> objectToEdit) throws Exception {
+        Restaurant resturant = new Restaurant();
+        resturant.setName(objectToEdit.get("name"));
+        resturant.setId(objectToEdit.get("pib"));
+        resturant.setAddress(objectToEdit.get("address"));
+        if (sendRequest(Operation.EDIT_RESTAURANT, resturant) != null) {
+            return true;
         }
         return false;
     }
@@ -127,7 +137,7 @@ public class Controller {
         form.getRtm().setList(restaurants);
         form.getTblRestaurants().setModel(tm);
     }
-    
+
     public void findRestaurants(HashMap criteria, TableForm form) throws Exception {
         ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) sendRequest(Operation.FIND_RESTAURANTS, criteria);
         RestaurantTableModel tm = new RestaurantTableModel();
@@ -193,7 +203,7 @@ public class Controller {
         guest.setContact(data.get("contact"));
         return (boolean) sendRequest(Operation.SAVE_GUEST, guest);
     }
-    
+
     public HashMap<String, String> findGuest(String guestID) throws Exception {
         HashMap<String, String> hashMapGuest = new HashMap<>();
         Guest guest = new Guest();
@@ -206,7 +216,7 @@ public class Controller {
         hashMapGuest.put("email", guest.getEmail());
         return hashMapGuest;
     }
-    
+
     public ArrayList<Restaurant> getAllRestaurants() throws Exception {
         return (ArrayList<Restaurant>) sendRequest(Operation.GET_ALL_RESTAURANTS, null);
     }
@@ -218,29 +228,27 @@ public class Controller {
     public ArrayList<Guest> getAllGuests() throws Exception {
         return (ArrayList<Guest>) sendRequest(Operation.GET_ALL_GUESTS, null);
     }
-    
+
     public boolean createReservation(HashMap<String, String> data) throws Exception {
         Table t = new Table();
-        t.setID(data.get("tableID"));
+        t.setId(data.get("tableID"));
         Guest g = new Guest();
-        g.setID(data.get("guestID"));
+        g.setId(data.get("guestID"));
         User u = new User();
-        u.setID(data.get("userID"));
+        u.setId(data.get("userID"));
         Reservation r = new Reservation(null, g, t, u, LocalDate.parse(data.get("date")), LocalTime.parse(data.get("time")), data.get("note"));
         return (boolean) sendRequest(Operation.SAVE_RESERVATION, r);
     }
-    
+
 //    public void findTablesByGuest(String guestID, Form efv) throws Exception {
 //        
 //    }
-    
     public void quit(User loggedUser) throws Exception {
         sendRequest(Operation.LOGOUT, loggedUser);
     }
-    
+
     public void getAll(ReservationForm form) throws Exception {
         ArrayList<Restaurant> restaurants = Controller.getInstace().getAllRestaurants();
-        ArrayList<Table> tables = Controller.getInstace().getAllTables();
         ArrayList<Guest> guests = Controller.getInstace().getAllGuests();
 
         GuestTableModel gtm = new GuestTableModel();
@@ -253,22 +261,19 @@ public class Controller {
         form.getTblRestaurants().setModel(rtm);
         form.setRtm(rtm);
 
-        TableTableModel ttm = new TableTableModel();
-        ttm.setList(tables);
-        form.getTblTables().setModel(ttm);
-        form.setTtm(ttm);
+    }
 
-    }
-    
-     public void setTables(Reservation reservation, ReservationForm form) throws Exception {
+    public void setTables(Reservation reservation, ReservationForm form) throws Exception {
+
         ArrayList<Table> tables = (ArrayList<Table>) sendRequest(Operation.GET_ALL_TABLES, reservation);
+
         TableTableModel ttm = new TableTableModel();
         ttm.setList(tables);
         form.setTtm(ttm);
         form.getTblTables().setModel(ttm);
     }
-     
-      public User userHashToUserObject(HashMap<String, String> userHash) {
+
+    public User userHashToUserObject(HashMap<String, String> userHash) {
         User user = new User();
         user.setID(userHash.get("UserID"));
         user.setUsername(userHash.get("Username"));
@@ -276,8 +281,8 @@ public class Controller {
         user.setLastName(userHash.get("LastName"));
         return user;
     }
-      
-      public void connect() throws IOException {
+
+    public void connect() throws IOException {
         if (Communication.getInstance().getSocket() == null) {
             Socket socket = new Socket("localhost", 9000);
             Communication.getInstance().setSocket(socket);

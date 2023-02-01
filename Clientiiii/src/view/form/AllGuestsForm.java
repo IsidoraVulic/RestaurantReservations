@@ -44,6 +44,8 @@ public class AllGuestsForm extends GenericForm {
         setTableModels();
         setTools();
         setLocationRelativeTo(null);
+        guestTableModel.setList(Controller.getInstace().getAllGuests());
+        tblGuests.setModel(guestTableModel);
     }
 
     /**
@@ -387,7 +389,7 @@ public class AllGuestsForm extends GenericForm {
     }
 
     private void createGuest() throws Exception {
-        GuestForm form = new GuestForm();
+        GuestForm form = new GuestForm("add");
         form.setParentForm(this);
         form.setStatus("add");
         form.setVisible(true);
@@ -396,9 +398,8 @@ public class AllGuestsForm extends GenericForm {
     }
 
     private void editGuest(String id) throws Exception {
-        GuestForm form = new GuestForm();
+        GuestForm form = new GuestForm("edit");
         form.setParentForm(this);
-        form.setStatus("edit");
         HashMap<String, String> hashMapClana = Controller.getInstace().findGuest(id);
         form.setGuestID(hashMapClana.get("id"));
         form.setFirstname(hashMapClana.get("firstname"));

@@ -70,6 +70,7 @@ public class AllRestaurantsForm extends GenericForm {
         btnBackToMain = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        btnCreate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -168,29 +169,40 @@ public class AllRestaurantsForm extends GenericForm {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Restorani");
 
+        btnCreate.setText("Kreiraj novi");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(62, 62, 62)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnBackToMain)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnEdit))
-                        .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnBackToMain)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEdit))
+                    .addComponent(panelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCreate)))
                 .addContainerGap(71, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(jLabel4)
-                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(btnCreate))
+                .addGap(28, 28, 28)
                 .addComponent(panelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -212,6 +224,7 @@ public class AllRestaurantsForm extends GenericForm {
             try {
                 findRestaurants();
             } catch (Exception ex) {
+                ex.printStackTrace();
                 Logger.getLogger(AllRestaurantsForm.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -219,10 +232,11 @@ public class AllRestaurantsForm extends GenericForm {
         }    }//GEN-LAST:event_btnFindActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-       int selected = tblRestaurants.getSelectedRow();
+        int selected = tblRestaurants.getSelectedRow();
         if (selected != -1) {
             try {
                 editRestaurant(rtm.getList().get(selected).getId());
+                rtm.fireTableDataChanged();
             } catch (Exception ex) {
                 Logger.getLogger(AllRestaurantsForm.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -230,6 +244,15 @@ public class AllRestaurantsForm extends GenericForm {
             JOptionPane.showMessageDialog(this, "Odaberite restoran koji želite da izmenite.");
         }
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        try {
+            createRestaurant();
+            rtm.fireTableDataChanged();
+        } catch (Exception ex) {
+            Logger.getLogger(AllRestaurantsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCreateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,6 +320,7 @@ public class AllRestaurantsForm extends GenericForm {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBackToMain;
+    private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnFind;
     private javax.swing.JLabel jLabel1;
@@ -337,6 +361,8 @@ public class AllRestaurantsForm extends GenericForm {
 
     private boolean validID() {
         String pib = txtPIB.getText();
+        if(txtPIB.getText().isBlank())
+            return true;
         if (pib.length() == 8 && pib.charAt(0) != '0') {
             if (pib.charAt(0) == '1' && pib.charAt(7) == '0') {
                 return false;
@@ -348,7 +374,7 @@ public class AllRestaurantsForm extends GenericForm {
 
     private boolean validAddress() {
         String address = txtAddress.getText();
-        if (address.length() > 1) {
+        if (address.length() > 1 || txtAddress.getText().isEmpty()) {
             return true;
         }
         return false;
@@ -356,14 +382,14 @@ public class AllRestaurantsForm extends GenericForm {
 
     private boolean validName() {
         String name = txtName.getText();
-        if (name.length() > 1) {
+        if (name.length() > 1|| txtName.getText().isEmpty()) {
             return true;
         }
         return false;
     }
 
     private void editRestaurant(String id) throws Exception {
-        RestaurantForm form = new RestaurantForm();
+        RestaurantForm form = new RestaurantForm("edit");
         form.setParentForm(this);
         HashMap<String, String> hashMapRes = Controller.getInstace().findRestaurant(id);
         form.setId(hashMapRes.get("pib"));
@@ -373,4 +399,12 @@ public class AllRestaurantsForm extends GenericForm {
         form.setVisible(true);
         dispose();
     }
+
+    private void createRestaurant() throws Exception {
+        RestaurantForm form = new RestaurantForm("add");
+        form.setParentForm(this);
+        form.setVisible(true);
+        dispose();
+    }
+
 }

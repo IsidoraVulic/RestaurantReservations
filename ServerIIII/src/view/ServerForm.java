@@ -13,7 +13,7 @@ import server.Server;
 public class ServerForm extends javax.swing.JFrame {
 
     private boolean active;
-    private Server server;
+        private Server server;
 
     /**
      * Creates new form ServerForm

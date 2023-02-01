@@ -27,6 +27,7 @@ public enum Operation {
     GET_ALL_GUESTS,
     SAVE_RESERVATION,
     FIND_TABLES_BY_GUEST,
+    EDIT_RESTAURANT,
     
     EDIT_GUEST,
     DELETE_GUEST,

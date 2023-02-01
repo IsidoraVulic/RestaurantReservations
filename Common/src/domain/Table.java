@@ -62,12 +62,12 @@ public class Table implements Serializable, GenericEntity {
 
     @Override
     public String getTableName() {
-        return "table";
+        return "dining_table";
     }
 
     @Override
     public String getInsertValues() {
-        return String.format("'%s', '%s'", chairs, pib);
+        return String.format("'%s', '%s', '%s'", id, pib, chairs);
     }
 
     @Override
@@ -107,5 +107,10 @@ public class Table implements Serializable, GenericEntity {
     @Override
     public void setID(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getColumnNames() {
+        return String.format("TableID, RestaurantID, Chairs");
     }
 }

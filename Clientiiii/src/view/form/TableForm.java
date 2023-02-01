@@ -63,6 +63,7 @@ public class TableForm extends GenericForm {
         setFormName();
         setTableModels();
         setTools();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -96,6 +97,9 @@ public class TableForm extends GenericForm {
         tblTables = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
+        btnAddTable = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        spinNoChairs = new javax.swing.JSpinner();
         btnBackToMain = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -180,6 +184,7 @@ public class TableForm extends GenericForm {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Sto");
 
+        panelRestaurant.setBackground(new java.awt.Color(255, 255, 255));
         panelRestaurant.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tblRestaurants.setModel(new javax.swing.table.DefaultTableModel(
@@ -241,6 +246,7 @@ public class TableForm extends GenericForm {
                 .addGap(60, 60, 60))
         );
 
+        panelTables.setBackground(new java.awt.Color(255, 255, 255));
         panelTables.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         tblTables.setModel(new javax.swing.table.DefaultTableModel(
@@ -256,7 +262,7 @@ public class TableForm extends GenericForm {
         ));
         jScrollPane2.setViewportView(tblTables);
 
-        jLabel4.setText("Izaberite sto:");
+        jLabel4.setText("Stolovi u odabranom restoranu:");
 
         btnDelete.setText("Obriši");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -265,17 +271,40 @@ public class TableForm extends GenericForm {
             }
         });
 
+        btnAddTable.setText("Dodaj sto");
+        btnAddTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddTableActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Broj stolica:");
+
+        spinNoChairs.setModel(new javax.swing.SpinnerNumberModel(2, 2, 10, 1));
+
         javax.swing.GroupLayout panelTablesLayout = new javax.swing.GroupLayout(panelTables);
         panelTables.setLayout(panelTablesLayout);
         panelTablesLayout.setHorizontalGroup(
             panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTablesLayout.createSequentialGroup()
+            .addGroup(panelTablesLayout.createSequentialGroup()
                 .addContainerGap(25, Short.MAX_VALUE)
                 .addGroup(panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDelete)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTablesLayout.createSequentialGroup()
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(26, 26, 26)
+                            .addGroup(panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnAddTable)
+                                .addGroup(panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(spinNoChairs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(58, 58, 58))
+                        .addGroup(panelTablesLayout.createSequentialGroup()
+                            .addComponent(btnDelete)
+                            .addContainerGap()))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTablesLayout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(263, 263, 263))))
         );
         panelTablesLayout.setVerticalGroup(
             panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,13 +312,26 @@ public class TableForm extends GenericForm {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDelete)
+                .addGroup(panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelTablesLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDelete))
+                    .addGroup(panelTablesLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(spinNoChairs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(btnAddTable)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnBackToMain.setText("Nazad");
+        btnBackToMain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackToMainActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -333,7 +375,10 @@ public class TableForm extends GenericForm {
                 findRestaurants();
             } catch (Exception ex) {
                 Logger.getLogger(TableForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Sistem ne moze da pronadje restorane");
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Neispravan unos");
         }
     }//GEN-LAST:event_btnFindRestaurantsActionPerformed
 
@@ -351,12 +396,13 @@ public class TableForm extends GenericForm {
     private void btnShowTablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowTablesActionPerformed
         if (tblRestaurants.getSelectedRow() != -1) {
             try {
-                findTables(restaurantTableModel.getList().get(tblRestaurants.getSelectedRow()).getIDvalue());
+                findTables(restaurantTableModel.getList().get(tblRestaurants.getSelectedRow()).getId());
+                System.out.println(restaurantTableModel.getList().get(tblRestaurants.getSelectedRow()).getId());
             } catch (Exception ex) {
                 Logger.getLogger(TableForm.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Odaberite knjigu za koju želite da nađete primerke.");
+            JOptionPane.showMessageDialog(this, "Odaberite restoran za koji želite da nađete stolove.");
         }    }//GEN-LAST:event_btnShowTablesActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -369,6 +415,20 @@ public class TableForm extends GenericForm {
         } else {
             JOptionPane.showMessageDialog(this, "Odaberite primerak koji želite da obrišete.");
         }    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnAddTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTableActionPerformed
+        if (tblRestaurants.getSelectedRow() != -1) {
+            createObject();
+            try {
+                Controller.getInstace().findTables(restaurantTableModel.getList().get(tblRestaurants.getSelectedRow()).getId(), this);
+            } catch (Exception ex) {
+                Logger.getLogger(TableForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnAddTableActionPerformed
+
+    private void btnBackToMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMainActionPerformed
+        goBackToMain();    }//GEN-LAST:event_btnBackToMainActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,7 +468,26 @@ public class TableForm extends GenericForm {
 
     @Override
     HashMap<String, String> createObject() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            HashMap<String, String> table = new HashMap<>();
+            table.put("type", "table");
+            table.put("pib", restaurantTableModel.getList().get(tblRestaurants.getSelectedRow()).getId());
+            System.out.println(restaurantTableModel.getList().get(tblRestaurants.getSelectedRow()).getIDvalue());
+            table.put("chairs", spinNoChairs.getValue().toString());
+            boolean success = Controller.getInstace().saveObject(table);
+            if (success) {
+                JOptionPane.showMessageDialog(this, "Sistem je zapamtio sto. \n PIB restorana: " + table.get("pib")
+                        + "\n Broj stolica: " + table.get("chairs"));
+
+                return table;
+            } else {
+                JOptionPane.showMessageDialog(this, "Sistem ne moze da zapamti sto.");
+                return null;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(TableForm.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     @Override
@@ -433,6 +512,7 @@ public class TableForm extends GenericForm {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddTable;
     private javax.swing.JButton btnBackToMain;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnFindRestaurants;
@@ -442,6 +522,7 @@ public class TableForm extends GenericForm {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblAddress;
@@ -451,6 +532,7 @@ public class TableForm extends GenericForm {
     private javax.swing.JPanel panelRestaurant;
     private javax.swing.JPanel panelSearch;
     private javax.swing.JPanel panelTables;
+    private javax.swing.JSpinner spinNoChairs;
     private javax.swing.JTable tblRestaurants;
     private javax.swing.JTable tblTables;
     private javax.swing.JTextField txtAddress;
@@ -459,7 +541,7 @@ public class TableForm extends GenericForm {
     // End of variables declaration//GEN-END:variables
 
     private boolean validSearch() {
-        if (correctPIB()) {
+        if (validID() && validAddress() && validName()) {
             return true;
         }
         return false;
@@ -474,15 +556,18 @@ public class TableForm extends GenericForm {
             criteria.put("name", txtName.getText());
         }
         if (!txtPib.getText().isEmpty()) {
-            criteria.put("PIB", txtPib.getText());
+            criteria.put("pib", txtPib.getText());
         }
         Controller.getInstace().findRestaurants(criteria, this);
         JOptionPane.showMessageDialog(this, "Sistem je našao sve restorane po zadatoj vrednosti.");
     }
 
-    private boolean correctPIB() {
+    private boolean validID() {
         String pib = txtPib.getText();
-        if (pib.length() == 8 && pib.charAt(0) != '0' && (pib.charAt(0) == '1' && pib.charAt(7) == '0')) {
+        if (pib.isEmpty()) {
+            return true;
+        }
+        if (pib.length() == 8 && pib.charAt(0) != '0' && (pib.charAt(0) == '1' && pib.charAt(7) != '0')) {
             return true;
         }
         return false;
@@ -497,7 +582,10 @@ public class TableForm extends GenericForm {
 
     private void findTables(String iDvalue) throws Exception {
         boolean success = Controller.getInstace().findTables(iDvalue, this);
-        if (success) {
+        if(tableTableModel.getList().size()==0){
+            JOptionPane.showMessageDialog(this, "Dati restoran nema unete stolove");
+        }
+        else if (success) {
             JOptionPane.showMessageDialog(this, "Sistem je našao stolove za dati restoran.");
         } else {
             JOptionPane.showMessageDialog(this, "Sistem ne može da nađe stolove za dati restoran.");
@@ -512,5 +600,21 @@ public class TableForm extends GenericForm {
         } else {
             JOptionPane.showMessageDialog(this, "Sistem ne može da obriše izabrani sto.");
         }
+    }
+
+    private boolean validAddress() {
+        String address = txtAddress.getText();
+        if (address.length() > 1 || txtAddress.getText().isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validName() {
+        String name = txtName.getText();
+        if (name.length() > 1 || txtName.getText().isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }

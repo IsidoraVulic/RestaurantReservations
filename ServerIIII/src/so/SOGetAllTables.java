@@ -25,8 +25,11 @@ public class SOGetAllTables extends GenericSystemOperation {
     @Override
     protected void executeOperation() throws ServerException {
         try {
-            tables = dbb.getAllTables(reservation);
+            System.out.println(reservation.toString() + "SO");
+           this.tables = dbb.getAllTables(reservation);
+            System.out.println(tables.get(0) + "SO");
         } catch (Exception ex) {
+            ex.printStackTrace();
             Logger.getLogger(SOGetAllTables.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

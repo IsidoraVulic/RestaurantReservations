@@ -20,6 +20,8 @@ public interface GenericEntity extends Serializable {
 
     String getInsertValues(); //vrati parametre
 
+    String getColumnNames();
+    
     String getID();
     
     String getIDvalue();

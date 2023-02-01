@@ -43,6 +43,8 @@ public class SOLogin extends GenericSystemOperation {
             Logger.getLogger(SOLogin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(SOLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SOLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

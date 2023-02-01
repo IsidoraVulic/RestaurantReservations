@@ -127,12 +127,17 @@ public class Restaurant implements Serializable, GenericEntity {
 
     @Override
     public String getUpdate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return String.format("name='%s', address='%s'", name,address);
     }
 
     @Override
     public void setID(String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String getColumnNames() {
+        return String.format("RestaurantID, Name, Address");
     }
 
 }

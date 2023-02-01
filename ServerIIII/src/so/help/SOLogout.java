@@ -35,6 +35,8 @@ public class SOLogout extends GenericSystemOperation {
             Logger.getLogger(SOLogout.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(SOLogout.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SOLogout.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

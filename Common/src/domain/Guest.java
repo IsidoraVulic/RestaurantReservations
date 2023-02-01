@@ -165,4 +165,9 @@ public class Guest implements Serializable, GenericEntity {
         this.id = id;
     }
 
+    @Override
+    public String getColumnNames() {
+        return String.format("GuestID, FirstName, LastName, Contact, Email");
+    }
+
 }
