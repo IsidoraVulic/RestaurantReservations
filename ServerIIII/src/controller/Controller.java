@@ -21,6 +21,7 @@ import so.SODeleteTable;
 import so.SOEditRestaurant;
 import so.SOFindGuest;
 import so.SOFindGuests;
+import so.SOFindReservations;
 import so.SOFindRestaurant;
 import so.SOFindRestaurants;
 import so.SOFindTables;
@@ -122,6 +123,14 @@ public class Controller {
         sokc.execute();
         return sokc.getGuest();
     }
+    
+    public ArrayList<Reservation> findReservations(HashMap<String, String> kriterijum) throws ServerException, IOException, SQLException, ClassNotFoundException {
+        SOFindReservations findReservations = new SOFindReservations();
+        findReservations.setCriteria(kriterijum);
+        findReservations.execute();
+        return findReservations.getReservations();
+    }
+
 
 
     public ArrayList<Guest> findGuests(HashMap<String, String> kriterijum) throws ServerException, IOException, SQLException, ClassNotFoundException {

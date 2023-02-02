@@ -144,6 +144,7 @@ public class ProcessRequests extends Thread {
                             guest = Controller.vratiInstancu().createGuest();
                             response.setResult(guest);
                             break;
+
                         case FIND_GUESTS:
                             criteria = (HashMap<String, String>) request.getArgument();
                             ArrayList<Guest> rezultatPretrage = Controller.vratiInstancu().findGuests(criteria);
@@ -153,6 +154,11 @@ public class ProcessRequests extends Thread {
                             guest = (Guest) request.getArgument();
                             Guest completeGuest = Controller.vratiInstancu().findGuest(guest);
                             response.setResult(completeGuest);
+                            break;
+                        case GET_ALL_RESERVATIONS:
+                            criteria = (HashMap<String, String>) request.getArgument();
+                            ArrayList<Reservation> rezultat = Controller.vratiInstancu().findReservations(criteria);
+                            response.setResult(rezultat);
                             break;
                         case SAVE_GUEST:
                             guest = (Guest) request.getArgument();

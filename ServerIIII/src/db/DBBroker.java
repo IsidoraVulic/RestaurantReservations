@@ -272,6 +272,42 @@ public class DBBroker {
         }
         return guests;
     }
+    
+    public ArrayList<Reservation> findReservations(HashMap<String, String> criteria) throws ServerException, Exception {
+        String upit = "SELECT * FROM reservation r join guest g on r.GuestID=g.GuestID join dining_table t on r.TableID=t.TableID join restaurant res on res.RestaurantID=t.RestaurantID";
+        ArrayList<Reservation> reservations = new ArrayList<>();
+        if (criteria != null) {
+            if (criteria.size() > 0) {
+                upit += " WHERE ";
+            }
+            if (criteria.get("firstname") != null) {
+                upit += "g.FirstName LIKE '%" + criteria.get("firstname") + "%' AND ";
+            }
+            if (criteria.get("lastname") != null) {
+                upit += "g.LastName LIKE '%" + criteria.get("lastname") + "%' AND ";
+            }
+            if (criteria.get("restaurant") != null) {
+                upit += "res.Name= '" + criteria.get("restaurant") + "'";
+            }
+            System.out.println(upit.substring(upit.length() - 4, upit.length()).equals("AND "));
+            if (upit.substring(upit.length() - 4, upit.length()).equals("AND ")) {
+                upit = upit.substring(0, upit.length() - 4);
+            }
+        }
+        try {
+            Statement s = connection.createStatement();
+            System.out.println(upit);
+            ResultSet rs = s.executeQuery(upit);
+            ArrayList<GenericEntity> odoLista = (ArrayList<GenericEntity>) new Reservation().getList(rs);
+            for (GenericEntity opstiDomenskiObjekat : odoLista) {
+                reservations.add((Reservation) opstiDomenskiObjekat);
+                System.out.println(opstiDomenskiObjekat);
+            }
+        } catch (SQLException ex) {
+            throw new ServerException("Greska pri kreiranju upita");
+        }
+        return reservations;
+    }
 
     public ArrayList<Table> findTakenTables(Guest guest) throws ServerException, Exception {
         ArrayList<Table> tables = new ArrayList<>();

@@ -178,14 +178,20 @@ public class Reservation implements Serializable, GenericEntity {
 
             Guest guest = new Guest();
             guest.setId(rs.getString("GuestID"));
+            guest.setFirstname(rs.getString("FirstName"));
+            guest.setLastname(rs.getString("LastName"));
             reservation.setGuest(guest);
 
             Table table = new Table();
-            table.setID(rs.getString("TableID"));
+            table.setId(rs.getString("TableID"));
             reservation.setTable(table);
+            
+            Restaurant restaurant = new Restaurant();
+            restaurant.setId(rs.getString("RestaurantID"));
+            table.setPib(restaurant.getId());
 
             User user = new User();
-            user.setID(rs.getString("UserID"));
+            user.setId(rs.getString("UserID"));
             reservation.setUser(user);
             
 

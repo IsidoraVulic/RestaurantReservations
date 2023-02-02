@@ -21,10 +21,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import view.form.AllGuestsForm;
+import view.form.AllReservationsForm;
 import view.form.AllRestaurantsForm;
 import view.form.ReservationForm;
 import view.form.TableForm;
 import view.form.tablemodel.GuestTableModel;
+import view.form.tablemodel.ReservationTableModel;
 import view.form.tablemodel.RestaurantTableModel;
 import view.form.tablemodel.TableTableModel;
 
@@ -114,7 +116,7 @@ public class Controller {
                 }
                 break;
             default:
-                throw new Exception("Pokušavate da zapamtite nepoznat objekta.");
+                throw new Exception("Pokušavate da zapamtite nepoznat objekat.");
         }
         return false;
     }
@@ -192,6 +194,14 @@ public class Controller {
         tm.setList(guests);
         form.getTblGuests().setModel(tm);
         form.setGuestTableModel(tm);
+    }
+    
+    public void findReservations(HashMap<String, String> criteria, AllReservationsForm form) throws Exception {
+        ArrayList<Reservation> reservations = (ArrayList<Reservation>) sendRequest(Operation.GET_ALL_RESERVATIONS, criteria);
+        ReservationTableModel rtm = new ReservationTableModel();
+        rtm.setList(reservations);
+        form.getTblReservations().setModel(rtm);
+        form.setRtm(rtm);
     }
 
     public boolean saveGuest(HashMap<String, String> data) throws Exception {
@@ -280,6 +290,14 @@ public class Controller {
         user.setFirstName(userHash.get("FirstName"));
         user.setLastName(userHash.get("LastName"));
         return user;
+    }
+    
+    public Restaurant resHashToResObject(HashMap<String, String> resHash) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId(resHash.get("pib"));
+        restaurant.setName(resHash.get("name"));
+        restaurant.setAddress(resHash.get("address"));
+        return restaurant;
     }
 
     public void connect() throws IOException {
