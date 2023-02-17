@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import view.ServerForm;
 
 /**
  *
@@ -38,6 +39,8 @@ public class ProcessRequests extends Thread {
     private List<ProcessRequests> clients;
     private ObjectInputStream in;
     private ObjectOutputStream out;
+
+    
 
     public ProcessRequests(Socket socket, List<ProcessRequests> clients) {
         this.socket = socket;
@@ -102,6 +105,7 @@ public class ProcessRequests extends Thread {
                             user = (User) request.getArgument();
                             User ulogovaniAdministrator = Controller.vratiInstancu().login(user);
                             response.setResult(ulogovaniAdministrator);
+                        
                             break;
                         case CREATE_RESTAURANT:
                             restaurant = (Restaurant) request.getArgument();

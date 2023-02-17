@@ -33,7 +33,7 @@ public class RestaurantForm extends GenericForm {
         if (status.equals("add")) {
             JOptionPane.showMessageDialog(parentForm, "Sistem je kreirao restoran");
         }
-
+        
         setFormName();
     }
 

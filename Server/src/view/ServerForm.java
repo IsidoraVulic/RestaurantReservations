@@ -4,7 +4,17 @@
  */
 package view;
 
+import controller.Controller;
+import domain.User;
+import exception.ServerException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTable;
 import server.Server;
+import view.tablemodel.UserTableModel;
 
 /**
  *
@@ -12,16 +22,46 @@ import server.Server;
  */
 public class ServerForm extends javax.swing.JFrame {
 
+    private UserTableModel model = new UserTableModel();
+
+    public UserTableModel getModel() {
+        return model;
+    }
+
+    public void setModel(UserTableModel model) {
+        this.model = model;
+    }
+
+    public JTable getTblUsers() {
+        return tblUsers;
+    }
+
+    public void setTblUsers(JTable tblUsers) {
+        this.tblUsers = tblUsers;
+    }
+
     private boolean active;
-        private Server server;
+    private Server server;
 
     /**
      * Creates new form ServerForm
      */
-    public ServerForm() {
+    public ServerForm() throws ServerException, IOException, SQLException, ClassNotFoundException {
         initComponents();
         setTitle();
         setLocationRelativeTo(null);
+        setTableModel();
+        fillUsers();
+    }
+
+    public static ServerForm instance;
+
+    public static ServerForm getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(ServerForm instance) {
+        ServerForm.instance = instance;
     }
 
     /**
@@ -36,6 +76,10 @@ public class ServerForm extends javax.swing.JFrame {
         btnStartServer = new javax.swing.JButton();
         lblStatus = new javax.swing.JLabel();
         lblPokrenut = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblUsers = new javax.swing.JTable();
+        btnOnline = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,31 +97,70 @@ public class ServerForm extends javax.swing.JFrame {
         lblPokrenut.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPokrenut.setText("Server nije pokrenut");
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("Korisnici:");
+
+        tblUsers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblUsers);
+
+        btnOnline.setText("Prikaži online korisnike");
+        btnOnline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOnlineActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(89, 89, 89)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPokrenut))
-                    .addComponent(btnStartServer, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(109, Short.MAX_VALUE))
+                        .addGap(153, 153, 153)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPokrenut)
+                                .addGap(17, 17, 17))
+                            .addComponent(btnStartServer, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnOnline)))))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
+                .addGap(36, 36, 36)
                 .addComponent(btnStartServer, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblStatus)
-                    .addComponent(lblPokrenut))
-                .addGap(46, 46, 46))
+                    .addComponent(lblPokrenut)
+                    .addComponent(lblStatus))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnOnline))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pack();
@@ -89,6 +172,10 @@ public class ServerForm extends javax.swing.JFrame {
         } else {
             stopServer();
         }    }//GEN-LAST:event_btnStartServerActionPerformed
+
+    private void btnOnlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOnlineActionPerformed
+        refreshTable();
+    }//GEN-LAST:event_btnOnlineActionPerformed
 
     /**
      * @param args the command line arguments
@@ -120,15 +207,29 @@ public class ServerForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ServerForm().setVisible(true);
+                try {
+                    new ServerForm().setVisible(true);
+                } catch (ServerException ex) {
+                    Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOnline;
     private javax.swing.JButton btnStartServer;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblPokrenut;
     private javax.swing.JLabel lblStatus;
+    private javax.swing.JTable tblUsers;
     // End of variables declaration//GEN-END:variables
 
     private void setTitle() {
@@ -148,5 +249,29 @@ public class ServerForm extends javax.swing.JFrame {
         lblPokrenut.setText("Server nije pokrenut");
         btnStartServer.setText("Pokreni server");
         active = false;
+    }
+
+    private void setTableModel() {
+        tblUsers.setModel(model);
+    }
+
+    private void fillUsers() throws ServerException, IOException, SQLException, ClassNotFoundException {
+        model = new UserTableModel(Controller.vratiInstancu().getListaKorisnika());
+        tblUsers.setModel(model);
+    }
+
+    public void refreshTable() {
+        try {
+            model = new UserTableModel(Controller.vratiInstancu().getListaKorisnika());
+            tblUsers.setModel(model);
+        } catch (ServerException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

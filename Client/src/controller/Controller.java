@@ -196,6 +196,14 @@ public class Controller {
         form.setGuestTableModel(tm);
     }
     
+    public void findGuests(HashMap<String, String> criteria, ReservationForm form) throws Exception {
+        ArrayList<Guest> guests = (ArrayList<Guest>) sendRequest(Operation.FIND_GUESTS, criteria);
+        GuestTableModel tm = new GuestTableModel();
+        tm.setList(guests);
+        form.getTblGuests().setModel(tm);
+        form.setGtm(tm);
+    }
+    
     public void findReservations(HashMap<String, String> criteria, AllReservationsForm form) throws Exception {
         ArrayList<Reservation> reservations = (ArrayList<Reservation>) sendRequest(Operation.GET_ALL_RESERVATIONS, criteria);
         ReservationTableModel rtm = new ReservationTableModel();

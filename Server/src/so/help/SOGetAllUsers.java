@@ -27,7 +27,9 @@ public class SOGetAllUsers extends GenericSystemOperation {
             List<GenericEntity> lista = dbb.getAll(new User());
             for (GenericEntity opstiDomenskiObjekat : lista) {
                 User a = (User) opstiDomenskiObjekat;
+
                 listaKorisnika.add(a);
+
             }
         } catch (Exception ex) {
             Logger.getLogger(SOGetAllUsers.class.getName()).log(Level.SEVERE, null, ex);

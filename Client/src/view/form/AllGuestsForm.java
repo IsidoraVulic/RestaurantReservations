@@ -392,7 +392,6 @@ public class AllGuestsForm extends GenericForm {
     private void createGuest() throws Exception {
         GuestForm form = new GuestForm("add");
         form.setParentForm(this);
-        form.setStatus("add");
         form.setVisible(true);
         dispose();
         guestTableModel.setList(Controller.getInstace().getAllGuests());

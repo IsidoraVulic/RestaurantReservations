@@ -301,7 +301,6 @@ public class DBBroker {
             ArrayList<GenericEntity> odoLista = (ArrayList<GenericEntity>) new Reservation().getList(rs);
             for (GenericEntity opstiDomenskiObjekat : odoLista) {
                 reservations.add((Reservation) opstiDomenskiObjekat);
-                System.out.println(opstiDomenskiObjekat);
             }
         } catch (SQLException ex) {
             throw new ServerException("Greska pri kreiranju upita");

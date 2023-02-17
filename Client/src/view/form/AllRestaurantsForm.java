@@ -391,6 +391,7 @@ public class AllRestaurantsForm extends GenericForm {
 
     private void editRestaurant(String id) throws Exception {
         RestaurantForm form = new RestaurantForm("edit");
+        form.setStatus("edit");
         form.setParentForm(this);
         HashMap<String, String> hashMapRes = Controller.getInstace().findRestaurant(id);
         form.setId(hashMapRes.get("pib"));

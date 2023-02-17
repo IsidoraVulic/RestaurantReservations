@@ -12,6 +12,7 @@ import domain.Table;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,11 +31,10 @@ public class ReservationForm extends GenericForm {
     private RestaurantTableModel rtm = new RestaurantTableModel();
     private GuestTableModel gtm = new GuestTableModel();
     private TableTableModel ttm = new TableTableModel();
-    
-    SimpleDateFormat dcn = new SimpleDateFormat("yyyy-MM-dd");
-    
-    //String date = dcn.format(.getDate() );
 
+    SimpleDateFormat dcn = new SimpleDateFormat("yyyy-MM-dd");
+
+    //String date = dcn.format(.getDate() );
     public RestaurantTableModel getRtm() {
         return rtm;
     }
@@ -94,8 +94,6 @@ public class ReservationForm extends GenericForm {
         setLocationRelativeTo(null);
         lock();
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -111,10 +109,16 @@ public class ReservationForm extends GenericForm {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblGuests = new javax.swing.JTable();
         lblGuest = new javax.swing.JLabel();
-        panelTables = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblTables = new javax.swing.JTable();
-        lblTables = new javax.swing.JLabel();
+        searchPanel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtFirstName = new javax.swing.JTextField();
+        txtLastName = new javax.swing.JTextField();
+        txtID = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
+        lblHelp = new javax.swing.JLabel();
         panelReservation = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblRestaurants = new javax.swing.JTable();
@@ -129,6 +133,10 @@ public class ReservationForm extends GenericForm {
         btnCheckRes = new javax.swing.JButton();
         btnCreate = new javax.swing.JButton();
         btnBackToMain = new javax.swing.JButton();
+        panelTables = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblTables = new javax.swing.JTable();
+        lblTables = new javax.swing.JLabel();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -157,69 +165,102 @@ public class ReservationForm extends GenericForm {
         lblGuest.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblGuest.setText("Izaberite gosta:");
 
+        searchPanel.setBackground(new java.awt.Color(255, 255, 255));
+        searchPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        searchPanel.setForeground(new java.awt.Color(255, 153, 153));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Pretražite goste po nekom od sledećih kriterijuma:");
+
+        jLabel4.setText("Ime:");
+
+        jLabel5.setText("Prezime:");
+
+        jLabel6.setText("ID gosta:");
+
+        btnSearch.setText("Pretraži");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        lblHelp.setText("(?)");
+
+        javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
+        searchPanel.setLayout(searchPanelLayout);
+        searchPanelLayout.setHorizontalGroup(
+            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(searchPanelLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchPanelLayout.createSequentialGroup()
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(searchPanelLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
+                        .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtFirstName)
+                            .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(searchPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSearch)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblHelp)
+                .addGap(44, 44, 44))
+        );
+        searchPanelLayout.setVerticalGroup(
+            searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(searchPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSearch)
+                    .addComponent(lblHelp))
+                .addGap(14, 14, 14))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 615, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblGuest, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52))
+                    .addComponent(searchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(18, 18, 18)
                 .addComponent(lblGuest)
-                .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
-
-        panelTables.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        tblTables.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tblTables.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblTablesMouseClicked(evt);
-            }
-        });
-        jScrollPane3.setViewportView(tblTables);
-
-        lblTables.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblTables.setText("Stolovi:");
-
-        javax.swing.GroupLayout panelTablesLayout = new javax.swing.GroupLayout(panelTables);
-        panelTables.setLayout(panelTablesLayout);
-        panelTablesLayout.setHorizontalGroup(
-            panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelTablesLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTables, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(52, Short.MAX_VALUE))
-        );
-        panelTablesLayout.setVerticalGroup(
-            panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTablesLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(lblTables)
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         panelReservation.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -262,46 +303,46 @@ public class ReservationForm extends GenericForm {
         panelReservationLayout.setHorizontalGroup(
             panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelReservationLayout.createSequentialGroup()
-                .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(41, 41, 41)
+                .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelReservationLayout.createSequentialGroup()
-                        .addGap(552, 552, 552)
-                        .addComponent(btnCheckRes))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelReservationLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
+                        .addComponent(jLabel2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelReservationLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelReservationLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(panelReservationLayout.createSequentialGroup()
-                                .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(panelReservationLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(81, 81, 81)
                                         .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(lblNote))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE))
+                                        .addGap(50, 50, 50))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelReservationLayout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
                                         .addComponent(lblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(50, 50, 50)))
                                 .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnCheckRes, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(52, 52, 52))))
         );
         panelReservationLayout.setVerticalGroup(
             panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelReservationLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDate)
-                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelReservationLayout.createSequentialGroup()
                 .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelReservationLayout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel2)
+                        .addGap(34, 34, 34)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelReservationLayout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDate)
+                            .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(35, 35, 35)
                         .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTime)
@@ -309,13 +350,10 @@ public class ReservationForm extends GenericForm {
                         .addGap(43, 43, 43)
                         .addGroup(panelReservationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblNote)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelReservationLayout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(17, 17, 17)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
                 .addComponent(btnCheckRes)
-                .addGap(25, 25, 25))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         btnCreate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -333,6 +371,50 @@ public class ReservationForm extends GenericForm {
             }
         });
 
+        panelTables.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        tblTables.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblTables.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTablesMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tblTables);
+
+        lblTables.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTables.setText("Stolovi:");
+
+        javax.swing.GroupLayout panelTablesLayout = new javax.swing.GroupLayout(panelTables);
+        panelTables.setLayout(panelTablesLayout);
+        panelTablesLayout.setHorizontalGroup(
+            panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTablesLayout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTables, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(82, Short.MAX_VALUE))
+        );
+        panelTablesLayout.setVerticalGroup(
+            panelTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTablesLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(lblTables)
+                .addGap(35, 35, 35)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -344,26 +426,26 @@ public class ReservationForm extends GenericForm {
                         .addComponent(btnBackToMain)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCreate))
-                    .addComponent(panelReservation, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(panelTables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(62, 62, 62)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(60, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(69, 69, 69)
+                        .addComponent(panelTables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelReservation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(panelReservation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelTables, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnCreate)
-                    .addComponent(btnBackToMain))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelTables, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBackToMain)
+                    .addComponent(btnCreate))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -371,23 +453,27 @@ public class ReservationForm extends GenericForm {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCheckResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckResActionPerformed
-        if (tblRestaurants.getSelectedRow() != -1 && dcn.format(txtDate.getDate()) != null && !txtTime.getText().isEmpty()) {
-            Restaurant restaurant = new Restaurant();
-            restaurant = rtm.getList().get(tblRestaurants.getSelectedRow());
-            Table table = new Table("", 0, restaurant.getId());
-            Reservation reservation = new Reservation();
-            reservation.setTable(table);
-            reservation.setDate(LocalDate.parse(dcn.format(txtDate.getDate())));
-            reservation.setTime(LocalTime.parse(txtTime.getText()));
-            System.out.println(reservation.toString());
-            try {
-                setTables(reservation);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                Logger.getLogger(ReservationForm.class.getName()).log(Level.SEVERE, null, ex);
+        if (txtDate != null && txtDate.getDate().after(new Date())) {
+            if (tblRestaurants.getSelectedRow() != -1 && dcn.format(txtDate.getDate()) != null && !txtTime.getText().isEmpty()) {
+                Restaurant restaurant = new Restaurant();
+                restaurant = rtm.getList().get(tblRestaurants.getSelectedRow());
+                Table table = new Table("", 0, restaurant.getId());
+                Reservation reservation = new Reservation();
+                reservation.setTable(table);
+                reservation.setDate(LocalDate.parse(dcn.format(txtDate.getDate())));
+                reservation.setTime(LocalTime.parse(txtTime.getText()));
+                System.out.println(reservation.toString());
+                try {
+                    setTables(reservation);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    Logger.getLogger(ReservationForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Odaberite restorant, zatim sto i gosta");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Odaberite restorant, zatim sto i gosta");
+        }else{
+            JOptionPane.showMessageDialog(this, "Datum i vreme ne smeju biti prazni! Moguća je rezervacija od narednog dana.");
         }
     }//GEN-LAST:event_btnCheckResActionPerformed
 
@@ -412,6 +498,18 @@ public class ReservationForm extends GenericForm {
     private void tblGuestsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGuestsMouseClicked
         btnCreate.setEnabled(true);
     }//GEN-LAST:event_tblGuestsMouseClicked
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        if (validSearch()) {
+            try {
+                findGuests();
+            } catch (Exception ex) {
+                Logger.getLogger(AllGuestsForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Neispravni parametri pretrage");
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -483,7 +581,12 @@ public class ReservationForm extends GenericForm {
     private javax.swing.JButton btnBackToMain;
     private javax.swing.JButton btnCheckRes;
     private javax.swing.JButton btnCreate;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -492,15 +595,20 @@ public class ReservationForm extends GenericForm {
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblGuest;
+    private javax.swing.JLabel lblHelp;
     private javax.swing.JLabel lblNote;
     private javax.swing.JLabel lblTables;
     private javax.swing.JLabel lblTime;
     private javax.swing.JPanel panelReservation;
     private javax.swing.JPanel panelTables;
+    private javax.swing.JPanel searchPanel;
     private javax.swing.JTable tblGuests;
     private javax.swing.JTable tblRestaurants;
     private javax.swing.JTable tblTables;
     private com.toedter.calendar.JDateChooser txtDate;
+    private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtLastName;
     private javax.swing.JTextArea txtNote;
     private javax.swing.JTextField txtTime;
     // End of variables declaration//GEN-END:variables
@@ -519,13 +627,13 @@ public class ReservationForm extends GenericForm {
         data.put("note", txtNote.getText());
         boolean success = Controller.getInstace().createReservation(data);
         Restaurant restaurant = new Restaurant();
-            restaurant = rtm.getList().get(tblRestaurants.getSelectedRow());
-            
+        restaurant = rtm.getList().get(tblRestaurants.getSelectedRow());
+
         Guest guest = new Guest();
         guest = gtm.getList().get(tblGuests.getSelectedRow());
         if (success) {
             JOptionPane.showMessageDialog(this, "Sistem je zapamtio rezervaciju: \nNaziv restorana: " + restaurant.getName()
-                    + "\nSto: " + data.get("tableID") + "\nVreme: " +data.get("time") + "\nDatum: " +data.get("date") + "\nGost: " + guest.toString() + "\nNapomena: " +data.get("note"));
+                    + "\nSto: " + data.get("tableID") + "\nVreme: " + data.get("time") + "\nDatum: " + data.get("date") + "\nGost: " + guest.toString() + "\nNapomena: " + data.get("note"));
         } else {
             JOptionPane.showMessageDialog(this, "Sistem ne može da zapamti rezevaciju");
         }
@@ -534,5 +642,48 @@ public class ReservationForm extends GenericForm {
     private void lock() {
         btnCreate.setEnabled(false);
         tblGuests.setEnabled(false);
+    }
+
+    private boolean validSearch() {
+        if (validID() && validFirstname() && validLastname()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void findGuests() throws Exception {
+        HashMap<String, String> criteria = new HashMap<>();
+        if (!txtID.getText().isEmpty()) {
+            criteria.put("id", txtID.getText());
+        }
+        if (!txtFirstName.getText().isEmpty()) {
+            criteria.put("firstname", txtFirstName.getText());
+        }
+        if (!txtLastName.getText().isEmpty()) {
+            criteria.put("lastname", txtLastName.getText());
+        }
+
+        Controller.getInstace().findGuests(criteria, this);
+        JOptionPane.showMessageDialog(this, "Sistem je našao goste po zadatoj vrednosti.");
+    }
+
+    private boolean validID() {
+        return true;
+    }
+
+    private boolean validLastname() {
+        String lastname = txtLastName.getText();
+        if (lastname.matches("[a-zA-Z]+") || lastname.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validFirstname() {
+        String firstname = txtFirstName.getText();
+        if (firstname.matches("[a-zA-Z]+") || firstname.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }
